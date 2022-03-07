@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sff.rbacdemo.system.mapper.RoleResourceMapper">
+    <resultMap id="BaseResultMap" type="com.sff.rbacdemo.system.entity.RoleResource">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="ROLE_ID" jdbcType="DECIMAL" property="roleId"/>
+        <result column="RESOURCE_ID" jdbcType="DECIMAL" property="resourceId"/>
+    </resultMap>
+    <delete id="deleteByRoleId" parameterType="java.lang.Long">
+        delete from t_role_resource where role_id = ${role_id}
+    </delete>
+    <delete id="deleteByResourceId" parameterType="java.lang.Long">
+        delete from t_role_resource where resource_id = ${resource_id}
+    </delete>
+</mapper>

@@ -1,0 +1,30 @@
+public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMuYk0mumUxsRJYlCp61Q74xWuHPwKoFhfDZPM84K5qPu7o7RzbaJe83496dcRInV0rbAovfYyCPtppraDtFJE8CAwEAAQ==
+server:
+  port: 8888
+sff:
+  algorithm:
+    salt: '!0@98#4&5^qwDFG'
+spring:
+  datasource:
+    druid:
+      name: druidDataSource
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      filter:
+        config:
+          enabled: true
+      initial-size: 5
+      max-active: 20
+      max-open-prepared-statements: 50
+      max-pool-prepared-statement-per-connection-size: 20
+      max-wait: 60000
+      min-evictable-idle-time-millis: 300000
+      min-idle: 10
+      pool-prepared-statements: true
+      url: jdbc:mysql://127.0.0.1:3306/rbac?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      username: root
+      password: WXlOncN1J7b6ZTTRWhP3C/zqiyeEC2NWQej6Eu91Odw0L3a/WACxxccuef7WUNFBazRO9bF+ddBOpB2Otq1Bjw==
+      connection-properties: config.decrypt=true;config.decrypt.key=${public-key};
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/system/*.xml
