@@ -2,11 +2,11 @@ package com.sff.rbacdemo.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sff.rbacdemo.system.dto.Tree;
+import com.sff.rbacdemo.common.model.TreeModel;
 import com.sff.rbacdemo.system.entity.Dept;
 import com.sff.rbacdemo.system.mapper.DeptMapper;
 import com.sff.rbacdemo.system.service.DeptService;
-import com.sff.rbacdemo.system.utils.TreeUtils;
+import com.sff.rbacdemo.common.utils.TreeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +32,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
 	private DeptMapper deptMapper;
 
 	@Override
-	public Tree<Dept> getDeptTree() {
-		List<Tree<Dept>> trees = new ArrayList<>();
+	public TreeModel<Dept> getDeptTree() {
+		List<TreeModel<Dept>> trees = new ArrayList<>();
 		List<Dept> depts = this.findAllDepts(new Dept());
 		depts.forEach(dept -> {
-			Tree<Dept> tree = new Tree<>();
+			TreeModel<Dept> tree = new TreeModel<>();
 			tree.setId(dept.getDeptId().toString());
 			tree.setParentId(dept.getParentId().toString());
 			tree.setText(dept.getDeptName());

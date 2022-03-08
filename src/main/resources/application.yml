@@ -3,7 +3,7 @@ server:
   port: 8888
 sff:
   algorithm:
-    salt: '!0@98#4&5^qwDFG'
+    salt: 'mrbird'
 spring:
   datasource:
     druid:
@@ -28,3 +28,5 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/system/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

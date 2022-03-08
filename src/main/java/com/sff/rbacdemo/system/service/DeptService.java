@@ -1,7 +1,7 @@
 package com.sff.rbacdemo.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.sff.rbacdemo.system.dto.Tree;
+import com.sff.rbacdemo.common.model.TreeModel;
 import com.sff.rbacdemo.system.entity.Dept;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface DeptService extends IService<Dept> {
 
-	Tree<Dept> getDeptTree();
+	TreeModel<Dept> getDeptTree();
 
 	List<Dept> findAllDepts(Dept dept);
 

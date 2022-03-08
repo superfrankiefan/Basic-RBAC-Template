@@ -2,13 +2,13 @@ package com.sff.rbacdemo.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sff.rbacdemo.system.dto.Tree;
+import com.sff.rbacdemo.common.model.TreeModel;
 import com.sff.rbacdemo.system.entity.Resource;
 import com.sff.rbacdemo.system.mapper.ResourceMapper;
 import com.sff.rbacdemo.system.service.ResourceService;
 import com.sff.rbacdemo.system.service.RoleResourceServie;
-import com.sff.rbacdemo.system.utils.TreeUtils;
-import org.apache.commons.lang.StringUtils;
+import com.sff.rbacdemo.common.utils.TreeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,24 +59,24 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public Tree<Resource> getResourceButtonTree() {
-        List<Tree<Resource>> trees = new ArrayList<>();
+    public TreeModel<Resource> getResourceButtonTree() {
+        List<TreeModel<Resource>> trees = new ArrayList<>();
         List<Resource> resources = this.findAllResources(new Resource());
         buildTrees(trees, resources);
         return TreeUtils.build(trees);
     }
 
     @Override
-    public Tree<Resource> getResourceTree() {
-        List<Tree<Resource>> trees = new ArrayList<>();
+    public TreeModel<Resource> getResourceTree() {
+        List<TreeModel<Resource>> trees = new ArrayList<>();
         List<Resource> resources = this.resourceMapper.findAll();
         buildTrees(trees, resources);
         return TreeUtils.build(trees);
     }
 
-    private void buildTrees(List<Tree<Resource>> trees, List<Resource> resources) {
+    private void buildTrees(List<TreeModel<Resource>> trees, List<Resource> resources) {
         resources.forEach(resource -> {
-            Tree<Resource> tree = new Tree<>();
+            TreeModel<Resource> tree = new TreeModel<>();
             tree.setId(resource.getResourceId().toString());
             tree.setParentId(resource.getParentId().toString());
             tree.setText(resource.getResourceName());
@@ -85,11 +85,11 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public Tree<Resource> getUserResource(String userName) {
-        List<Tree<Resource>> trees = new ArrayList<>();
+    public TreeModel<Resource> getUserResource(String userName) {
+        List<TreeModel<Resource>> trees = new ArrayList<>();
         List<Resource> resources = this.findUserResources(userName);
         resources.forEach(resource -> {
-            Tree<Resource> tree = new Tree<>();
+            TreeModel<Resource> tree = new TreeModel<>();
             tree.setId(resource.getResourceId().toString());
             tree.setParentId(resource.getParentId().toString());
             tree.setText(resource.getResourceName());

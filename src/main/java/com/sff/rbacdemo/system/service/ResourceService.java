@@ -1,7 +1,7 @@
 package com.sff.rbacdemo.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.sff.rbacdemo.system.dto.Tree;
+import com.sff.rbacdemo.common.model.TreeModel;
 import com.sff.rbacdemo.system.entity.Resource;
 
 import java.util.List;
@@ -15,11 +15,11 @@ public interface ResourceService extends IService<Resource> {
 
     List<Resource> findAllResources(Resource resource);
 
-    Tree<Resource> getResourceButtonTree();
+    TreeModel<Resource> getResourceButtonTree();
 
-    Tree<Resource> getResourceTree();
+    TreeModel<Resource> getResourceTree();
 
-    Tree<Resource> getUserResource(String userName);
+    TreeModel<Resource> getUserResource(String userName);
 
     Resource findById(Long resourceId);
 

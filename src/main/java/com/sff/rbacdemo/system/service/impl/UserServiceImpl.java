@@ -9,7 +9,7 @@ import com.sff.rbacdemo.system.mapper.UserMapper;
 import com.sff.rbacdemo.system.mapper.UserRoleMapper;
 import com.sff.rbacdemo.system.service.UserRoleService;
 import com.sff.rbacdemo.system.service.UserService;
-import com.sff.rbacdemo.system.utils.MD5Utils;
+import com.sff.rbacdemo.common.utils.MD5Utils;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,16 +49,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Override
     @Transactional
     public void registUser(User user) {
-        user.setCreateTime(new Date());
         user.setTheme(User.DEFAULT_THEME);
         user.setAvatar(User.DEFAULT_AVATAR);
         user.setGender(User.SEX_UNKNOW);
-        user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
+        user.setPassword(MD5Utils.encrypt(user.getUsername().toLowerCase(), user.getPassword()));
         this.save(user);
-        UserRole ur = new UserRole();
-        ur.setUserId(user.getUserId());
-        ur.setRoleId(3L);
-        this.userRoleMapper.insert(ur);
+//        UserRole ur = new UserRole();
+//        ur.setUserId(user.getUserId());
+//        ur.setRoleId(3L);
+//        this.userRoleMapper.insert(ur);
     }
 
     @Override
@@ -103,7 +102,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Override
     @Transactional
     public void updateLoginTime(String userName) {
-
+        User userIns = this.findByName(userName);
+        if(userIns != null){
+            userIns.setLastLoginTime(new Date());
+        }
     }
 
     @Override

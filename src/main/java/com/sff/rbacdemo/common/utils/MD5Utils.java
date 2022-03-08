@@ -4,6 +4,11 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Value;
 
+/**
+ * @author frankie fan
+ * @date 2022-03-07
+ * @description 密码加密
+ */
 public class MD5Utils {
 
 	protected MD5Utils(){

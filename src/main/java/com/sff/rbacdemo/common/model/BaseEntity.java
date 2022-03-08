@@ -17,24 +17,23 @@ import java.util.Date;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 public class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -4852732617765810959L;
 
     /** 创建人 */
-    private String createBy;
+    @TableField(value = "CREATE_BY", fill = FieldFill.INSERT)
+    private Long createBy;
     /** 创建时间 */
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(value = "CREATE_TIME", fill = FieldFill.INSERT)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /** 更新人 */
-    @TableField("UPDATE_BY")
-    private String updateBy;
+    @TableField(value = "UPDATE_BY", fill = FieldFill.INSERT_UPDATE)
+    private Long updateBy;
     /** 更新时间 */
-    @TableField( fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "UPDATE_TIME", fill = FieldFill.INSERT_UPDATE)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
