@@ -13,14 +13,22 @@ public class Role extends BaseEntity {
 
 	private static final long serialVersionUID = -1714476694755654924L;
 
-	@TableId(type = IdType.ASSIGN_ID)
-	@TableField("ROLE_ID")
+	@TableId(value = "ROLE_ID", type = IdType.ASSIGN_ID)
 	private Long roleId;
+
+	@TableField("ROLE_CODE")
+	private String roleCode;
 
 	@TableField("ROLE_NAME")
 	private String roleName;
 
 	@TableField("REMARK")
 	private String remark;
+
+	@TableField("STATUS")
+	private String roleStatus;
+
+	@TableField("ORDER_NO")
+	private String orderNo;
 
 }

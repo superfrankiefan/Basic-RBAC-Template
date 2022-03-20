@@ -1,16 +1,18 @@
 package com.sff.rbacdemo.system.controller;
 
+import com.sff.rbacdemo.common.annotation.Log;
 import com.sff.rbacdemo.common.controller.BaseController;
 import com.sff.rbacdemo.common.model.APIResponse;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.common.utils.MD5Utils;
-import com.sff.rbacdemo.common.annotation.Log;
 import com.sff.rbacdemo.system.entity.User;
 import com.sff.rbacdemo.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -22,32 +24,16 @@ public class UserController extends BaseController {
 
     private static final String ON = "on";
 
-    @PostMapping("regist")
-    public APIResponse<User> regist(@RequestBody User user) {
-        APIResponse<User> result = new APIResponse<>();
-        try {
-            User userIns = this.userService.findByName(user.getUsername());
-            if (userIns != null) {
-                return result.internalError("该用户名已被使用！");
-            }
-            this.userService.registUser(user);
-            return result.success("注册成功！");
-        } catch (Exception e) {
-            log.error("注册失败", e);
-            return result.internalError("注册失败，请联系网站管理员！");
-        }
-    }
-
     @Log("新增用户")
     @RequiresPermissions("user:add")
     @RequestMapping("add")
     @ResponseBody
     public APIResponse addUser(User user, Long[] roles) {
         try {
-            if (ON.equalsIgnoreCase(user.getStatus()))
-                user.setStatus(User.STATUS_VALID);
+            if (ON.equalsIgnoreCase(user.getUserStatus()))
+                user.setUserStatus(GlobalConstant.STATUS_VALID);
             else
-                user.setStatus(User.STATUS_LOCK);
+                user.setUserStatus(GlobalConstant.STATUS_LOCK);
             this.userService.addUser(user, roles);
             return APIResponse.OK("新增用户成功！", null);
         } catch (Exception e) {
@@ -62,10 +48,10 @@ public class UserController extends BaseController {
     @ResponseBody
     public APIResponse updateUser(User user, Long[] rolesSelect) {
         try {
-            if (ON.equalsIgnoreCase(user.getStatus()))
-                user.setStatus(User.STATUS_VALID);
+            if (ON.equalsIgnoreCase(user.getUserStatus()))
+                user.setUserStatus(GlobalConstant.STATUS_VALID);
             else
-                user.setStatus(User.STATUS_LOCK);
+                user.setUserStatus(GlobalConstant.STATUS_LOCK);
             this.userService.updateUser(user, rolesSelect);
             return APIResponse.OK("修改用户成功！", null);
         } catch (Exception e) {

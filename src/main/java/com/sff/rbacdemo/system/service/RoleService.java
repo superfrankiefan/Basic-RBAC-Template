@@ -1,6 +1,7 @@
 package com.sff.rbacdemo.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.system.dto.RoleWithResource;
 import com.sff.rbacdemo.system.entity.Role;
 
@@ -13,7 +14,15 @@ public interface RoleService extends IService<Role> {
 
 	List<Role> findUserRole(String userName);
 
-	List<Role> findAllRole(Role role);
+	List<Role> findAllRole();
+
+	/**
+	 * 分页获取角色信息
+	 * @param page
+	 * @param count
+	 * @return
+	 */
+	PageResponseDTO<Role> getRoleByPage(Integer page, Integer count);
 	
 	RoleWithResource findRoleWithResources(Long roleId);
 

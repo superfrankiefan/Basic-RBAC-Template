@@ -93,6 +93,11 @@
             <artifactId>ip2region</artifactId>
             <version>1.7</version>
         </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>3.3.1</version>
+        </dependency>
     </dependencies>
 
     <build>

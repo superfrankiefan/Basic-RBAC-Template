@@ -13,19 +13,25 @@ public class Dept extends BaseEntity {
 
     private static final long serialVersionUID = -7790334862410409053L;
 
-    @TableId(type = IdType.ASSIGN_ID)
-    @TableField("DEPT_ID")
-//	@ExportConfig(value = "编号")
+    @TableId(value = "DEPT_ID", type = IdType.ASSIGN_ID)
     private Long deptId;
 
     @TableField("PARENT_ID")
     private Long parentId;
 
+    @TableField("DEPT_CODE")
+    private String deptCode;
+
     @TableField("DEPT_NAME")
-//	@ExportConfig(value = "部门名称")
     private String deptName;
 
-    @TableField("ORDER_NUM")
-    private Long orderNum;
+    @TableField("STATUS")
+    private int status;
+
+    @TableField("ORDER_NO")
+    private int orderNo;
+
+    @TableField("REMARK")
+    private String remark;
 
 }

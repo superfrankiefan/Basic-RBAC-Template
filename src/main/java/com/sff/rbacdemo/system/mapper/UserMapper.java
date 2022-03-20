@@ -1,6 +1,7 @@
 package com.sff.rbacdemo.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.sff.rbacdemo.system.dto.UserInfoDTO;
 import com.sff.rbacdemo.system.dto.UserWithRole;
 import com.sff.rbacdemo.system.entity.User;
 
@@ -21,6 +22,13 @@ public interface UserMapper extends BaseMapper<User> {
 	 * @return
 	 */
 	List<UserWithRole> findUserWithRole(Long userId);
+
+	/**
+	 * 获取用户简要信息，包含角色
+	 * @param userId
+	 * @return
+	 */
+	List<UserInfoDTO> getUserInfo(Long userId);
 
 	/**
 	 * 查询用户信息包含角色和部门

@@ -15,8 +15,7 @@ public class SysLog implements Serializable {
 
     private static final long serialVersionUID = -8878596941954995444L;
 
-    @TableId(type = IdType.ASSIGN_ID)
-    @TableField("ID")
+    @TableId(value = "ID", type = IdType.ASSIGN_ID)
     private Long id;
 
     @TableField("USERNAME")

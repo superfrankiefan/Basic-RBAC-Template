@@ -1,12 +1,18 @@
 package com.sff.rbacdemo.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.sff.rbacdemo.common.model.PageResponseDTO;
+import com.sff.rbacdemo.system.dto.UserInfoDTO;
 import com.sff.rbacdemo.system.dto.UserWithRole;
 import com.sff.rbacdemo.system.entity.User;
 
 public interface UserService extends IService<User> {
 
     UserWithRole findById(Long userId);
+
+    UserInfoDTO getCurrentUserInfo();
+
+    PageResponseDTO<User> getUserListByDept(String deptId, int page, int count);
 
     User findByName(String userName);
 

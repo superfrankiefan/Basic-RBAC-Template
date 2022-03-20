@@ -1,8 +1,16 @@
 package com.sff.rbacdemo.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.enums.SqlLike;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sff.rbacdemo.common.model.PageResponseDTO;
+import com.sff.rbacdemo.common.properties.GlobalConstant;
+import com.sff.rbacdemo.system.dto.RoleInfoDTO;
+import com.sff.rbacdemo.system.dto.UserInfoDTO;
 import com.sff.rbacdemo.system.dto.UserWithRole;
+import com.sff.rbacdemo.system.entity.Role;
 import com.sff.rbacdemo.system.entity.User;
 import com.sff.rbacdemo.system.entity.UserRole;
 import com.sff.rbacdemo.system.mapper.UserMapper;
@@ -10,6 +18,7 @@ import com.sff.rbacdemo.system.mapper.UserRoleMapper;
 import com.sff.rbacdemo.system.service.UserRoleService;
 import com.sff.rbacdemo.system.service.UserService;
 import com.sff.rbacdemo.common.utils.MD5Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,16 +27,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j(topic = "UserServiceImpl.class")
 @Service("userService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements UserService {
-
-    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserMapper userMapper;
@@ -49,9 +58,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Override
     @Transactional
     public void registUser(User user) {
-        user.setTheme(User.DEFAULT_THEME);
         user.setAvatar(User.DEFAULT_AVATAR);
-        user.setGender(User.SEX_UNKNOW);
+        user.setGender(GlobalConstant.SEX_UNKNOW);
         user.setPassword(MD5Utils.encrypt(user.getUsername().toLowerCase(), user.getPassword()));
         this.save(user);
 //        UserRole ur = new UserRole();
@@ -64,7 +72,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Transactional
     public void addUser(User user, Long[] roles) {
         user.setCreateTime(new Date());
-        user.setTheme(User.DEFAULT_THEME);
         user.setAvatar(User.DEFAULT_AVATAR);
         user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
         this.save(user);
@@ -105,6 +112,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         User userIns = this.findByName(userName);
         if(userIns != null){
             userIns.setLastLoginTime(new Date());
+            userMapper.updateById(userIns);
         }
     }
 
@@ -127,6 +135,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         UserWithRole userWithRole = list.get(0);
         userWithRole.setRoleIds(roleList);
         return userWithRole;
+    }
+
+    @Override
+    public UserInfoDTO getCurrentUserInfo() {
+        User currentUser = (User) SecurityUtils.getSubject().getPrincipal();
+        try{
+            List<UserInfoDTO> userInfos = this.userMapper.getUserInfo(currentUser.getUserId());
+            List<RoleInfoDTO> roleInfos = new ArrayList<>();
+            userInfos.forEach(userInfo -> {
+                RoleInfoDTO roleInfo = new RoleInfoDTO();
+                roleInfo.setRoleCode(userInfo.getRoleCode());
+                roleInfo.setRemark(userInfo.getRemark());
+                roleInfo.setRoleName(userInfo.getRoleName());
+                roleInfos.add(roleInfo);
+            });
+            UserInfoDTO userInfo = userInfos.get(0);
+            userInfo.setRoles(roleInfos);
+            return userInfo;
+        }catch (Exception e){
+            throw e;
+        }
+    }
+
+    @Override
+    public PageResponseDTO<User> getUserListByDept(String deptId, int page, int count) {
+        Page<User> pager = new Page<>(page, count);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if (!deptId.equals("%")){
+            queryWrapper.eq("deptId", deptId);
+        }
+        IPage<User> paging = this.userMapper.selectPage(pager, queryWrapper);
+        PageResponseDTO pageResponseDTO = new PageResponseDTO();
+        pageResponseDTO.setPage(paging.getCurrent());
+        pageResponseDTO.setCount(paging.getSize());
+        pageResponseDTO.setTotal(paging.getTotal());
+        pageResponseDTO.setItems(paging.getRecords());
+        return pageResponseDTO;
     }
 
     @Override

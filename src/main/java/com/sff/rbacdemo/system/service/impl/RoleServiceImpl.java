@@ -1,7 +1,10 @@
 package com.sff.rbacdemo.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.system.dto.RoleWithResource;
 import com.sff.rbacdemo.system.entity.Role;
 import com.sff.rbacdemo.system.entity.RoleResource;
@@ -10,6 +13,7 @@ import com.sff.rbacdemo.system.mapper.RoleResourceMapper;
 import com.sff.rbacdemo.system.service.RoleResourceServie;
 import com.sff.rbacdemo.system.service.RoleService;
 import com.sff.rbacdemo.system.service.UserRoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +27,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j(topic = "RoleServiceImpl")
 @Service("roleService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
-
-    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private RoleMapper roleMapper;
@@ -47,13 +50,25 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public List<Role> findAllRole(Role role) {
+    public List<Role> findAllRole() {
         try {
             return this.roleMapper.findAll();
         } catch (Exception e) {
             log.error("获取角色信息失败", e);
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public PageResponseDTO<Role> getRoleByPage(Integer page, Integer count) {
+        Page<Role> pager = new Page<>(page, count);
+        IPage<Role> paging = this.roleMapper.selectPage(pager, null);
+        PageResponseDTO pageResponseDTO = new PageResponseDTO();
+        pageResponseDTO.setPage(paging.getCurrent());
+        pageResponseDTO.setCount(paging.getSize());
+        pageResponseDTO.setTotal(paging.getTotal());
+        pageResponseDTO.setItems(paging.getRecords());
+        return pageResponseDTO;
     }
 
     @Override

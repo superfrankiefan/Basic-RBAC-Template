@@ -3,6 +3,7 @@ package com.sff.rbacdemo.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sff.rbacdemo.common.model.TreeModel;
+import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.system.entity.Dept;
 import com.sff.rbacdemo.system.mapper.DeptMapper;
 import com.sff.rbacdemo.system.service.DeptService;
@@ -32,17 +33,33 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
 	private DeptMapper deptMapper;
 
 	@Override
-	public TreeModel<Dept> getDeptTree() {
+	public List<TreeModel<Dept>> getDeptTree(String deptCode, String deptName, int status) {
+		QueryWrapper queryWrapper = new QueryWrapper();
+		if(deptCode != null && !deptCode.isEmpty()){
+			queryWrapper.eq("DEPT_CODE", deptCode);
+		}
+		if(deptName != null && !deptName.isEmpty()){
+			queryWrapper.like("DEPT_NAME", deptName);
+		}
+		queryWrapper.eq("STATUS", status);
+		List<Dept> depts = this.deptMapper.selectList(queryWrapper);
 		List<TreeModel<Dept>> trees = new ArrayList<>();
-		List<Dept> depts = this.findAllDepts(new Dept());
 		depts.forEach(dept -> {
 			TreeModel<Dept> tree = new TreeModel<>();
 			tree.setId(dept.getDeptId().toString());
 			tree.setParentId(dept.getParentId().toString());
 			tree.setText(dept.getDeptName());
+			tree.setCode(dept.getDeptCode());
+			tree.setOrderNo(dept.getOrderNo());
+			tree.setRemark(dept.getRemark());
+			tree.setStatus(String.valueOf(dept.getStatus()));
+			tree.setCreateBy(dept.getCreateBy().toString());
+			tree.setCreateTime(dept.getCreateTime().toString());
+			tree.setUpdateBy(dept.getUpdateBy().toString());
+			tree.setUpdateTime(dept.getUpdateTime().toString());
 			trees.add(tree);
 		});
-		return TreeUtils.build(trees);
+		return TreeUtils.buildList(trees, GlobalConstant.ROOT_ID);
 	}
 
 	@Override
@@ -65,10 +82,6 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
 	@Override
 	@Transactional
 	public void addDept(Dept dept) {
-		Long parentId = dept.getParentId();
-		if (parentId == null)
-			dept.setParentId(0L);
-		dept.setCreateTime(new Date());
 		this.save(dept);
 	}
 

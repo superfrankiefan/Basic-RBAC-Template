@@ -3,6 +3,7 @@ package com.sff.rbacdemo.system.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sff.rbacdemo.common.model.TreeModel;
+import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.system.entity.Resource;
 import com.sff.rbacdemo.system.mapper.ResourceMapper;
 import com.sff.rbacdemo.system.service.ResourceService;
@@ -67,11 +68,16 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public TreeModel<Resource> getResourceTree() {
+    public List<TreeModel<Resource>> getResourceTree(String manuName, int status) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        if(manuName != null && !manuName.isEmpty()){
+            queryWrapper.like("RESOURCE_NAME", manuName);
+        }
+        queryWrapper.eq("STATUS", status);
+        List<Resource> resources = this.resourceMapper.selectList(queryWrapper);
         List<TreeModel<Resource>> trees = new ArrayList<>();
-        List<Resource> resources = this.resourceMapper.findAll();
         buildTrees(trees, resources);
-        return TreeUtils.build(trees);
+        return TreeUtils.buildList(trees, GlobalConstant.ROOT_ID);
     }
 
     private void buildTrees(List<TreeModel<Resource>> trees, List<Resource> resources) {
@@ -79,7 +85,13 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
             TreeModel<Resource> tree = new TreeModel<>();
             tree.setId(resource.getResourceId().toString());
             tree.setParentId(resource.getParentId().toString());
+            tree.setStatus(resource.getResourceStatus());
+            tree.setUrl(resource.getPath());
+            tree.setPerms(resource.getPerms());
+            tree.setOrderNo(resource.getOrderNo());
+            tree.setIcon(resource.getIcon());
             tree.setText(resource.getResourceName());
+            tree.setCreateTime(resource.getCreateTime().toString());
             trees.add(tree);
         });
     }
@@ -94,7 +106,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
             tree.setParentId(resource.getParentId().toString());
             tree.setText(resource.getResourceName());
             tree.setIcon(resource.getIcon());
-            tree.setUrl(resource.getUrl());
+            tree.setUrl(resource.getPath());
             trees.add(tree);
         });
         return TreeUtils.build(trees);
@@ -115,8 +127,8 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         resource.setCreateTime(new Date());
         if (resource.getParentId() == null)
             resource.setParentId(0L);
-        if (Resource.TYPE_BUTTON.equals(resource.getType())) {
-            resource.setUrl(null);
+        if (GlobalConstant.RES_TYPE_BTN.equals(resource.getType())) {
+            resource.setPath(null);
             resource.setIcon(null);
         }
         this.save(resource);
@@ -169,8 +181,8 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         resource.setUpdateTime(new Date());
         if (resource.getParentId() == null)
             resource.setParentId(0L);
-        if (Resource.TYPE_BUTTON.equals(resource.getType())) {
-            resource.setUrl(null);
+        if (GlobalConstant.RES_TYPE_BTN.equals(resource.getType())) {
+            resource.setPath(null);
             resource.setIcon(null);
         }
         this.resourceMapper.updateById(resource);

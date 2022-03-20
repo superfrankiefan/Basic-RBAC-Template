@@ -17,7 +17,7 @@ public interface ResourceService extends IService<Resource> {
 
     TreeModel<Resource> getResourceButtonTree();
 
-    TreeModel<Resource> getResourceTree();
+    List<TreeModel<Resource>> getResourceTree(String manuName, int status);
 
     TreeModel<Resource> getUserResource(String userName);
 

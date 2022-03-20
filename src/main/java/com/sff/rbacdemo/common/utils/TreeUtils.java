@@ -1,11 +1,9 @@
 package com.sff.rbacdemo.common.utils;
 
 import com.sff.rbacdemo.common.model.TreeModel;
+import com.sff.rbacdemo.common.properties.GlobalConstant;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TreeUtils {
 
@@ -18,34 +16,37 @@ public class TreeUtils {
 			return null;
 		}
 		List<TreeModel<T>> topNodes = new ArrayList<>();
-		nodes.forEach(children -> {
-			String pid = children.getParentId();
-			if (pid == null || "0".equals(pid)) {
-				topNodes.add(children);
+		nodes.forEach(child -> {
+			String pid = child.getParentId();
+			if (pid == null || "100".equals(pid)) {
+				topNodes.add(child);
 				return;
 			}
 			for (TreeModel<T> parent : nodes) {
 				String id = parent.getId();
 				if (id != null && id.equals(pid)) {
-					parent.getChildren().add(children);
-					children.setHasParent(true);
-					parent.setChildren(true);
+					parent.getChildren().add(child);
+					child.setHasParent(true);
+					parent.setHasChildren(true);
 					return;
 				}
 			}
 		});
 
 		TreeModel<T> root = new TreeModel<>();
-		root.setId("0");
-		root.setParentId("");
+		root.setId("100");
+		root.setOrderNo(1);
+		root.setCode("ROOT");
 		root.setHasParent(false);
-		root.setChildren(true);
-		root.setChecked(true);
+		root.setHasChildren(true);
+		root.setRemark("ROOT");
 		root.setChildren(topNodes);
 		root.setText("根节点");
-		Map<String, Object> state = new HashMap<>(16);
-		state.put("opened", true);
-		root.setState(state);
+		root.setCreateBy("admin");
+		root.setCreateTime(new Date().toString());
+		root.setUpdateBy("admin");
+		root.setUpdateTime(new Date().toString());
+		root.setStatus(GlobalConstant.STATUS_VALID);
 		return root;
 	}
 
@@ -54,18 +55,21 @@ public class TreeUtils {
 			return new ArrayList<>();
 		}
 		List<TreeModel<T>> topNodes = new ArrayList<>();
-		nodes.forEach(children -> {
-			String pid = children.getParentId();
+		nodes.forEach(child -> {
+			String pid = child.getParentId();
 			if (pid == null || idParam.equals(pid)) {
-				topNodes.add(children);
+				topNodes.add(child);
 				return;
 			}
 			nodes.forEach(parent -> {
 				String id = parent.getId();
 				if (id != null && id.equals(pid)) {
-					parent.getChildren().add(children);
-					children.setHasParent(true);
-					parent.setChildren(true);
+					if (parent.getChildren() == null){
+						parent.setChildren(new ArrayList<>());
+					}
+					parent.getChildren().add(child);
+					child.setHasParent(true);
+					parent.setHasChildren(true);
 				}
 			});
 		});

@@ -1,155 +1,77 @@
 package com.sff.rbacdemo.common.model;
 
-import com.alibaba.fastjson.JSON;
+import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Data
 public class TreeModel<T> {
-	/**
-	 * 节点ID
-	 */
-	private String id;
-	/**
-	 * 图标
-	 */
-	private String icon;
-	/**
-	 * url
-	 */
-	private String url;
-	/**
-	 * 显示节点文本
-	 */
-	private String text;
-	/**
-	 * 节点状态，open closed
-	 */
-	private Map<String, Object> state;
-	/**
-	 * 节点是否被选中 true false
-	 */
-	private boolean checked = false;
-	/**
-	 * 节点属性
-	 */
-	private Map<String, Object> attributes;
+    /**
+     * 节点ID
+     */
+    private String id;
+    /**
+     * 父ID
+     */
+    private String parentId;
+    /**
+     * 节点编码
+     */
+    private String code;
+    /**
+     * 显示节点文本
+     */
+    private String text;
 
-	/**
-	 * 节点的子节点
-	 */
-	private List<TreeModel<T>> children = new ArrayList<>();
+    private String status;
 
-	/**
-	 * 父ID
-	 */
-	private String parentId;
-	/**
-	 * 是否有父节点
-	 */
-	private boolean hasParent = false;
-	/**
-	 * 是否有子节点
-	 */
-	private boolean hasChildren = false;
+    private String type;
 
-	public String getId() {
-		return id;
-	}
+    private int orderNo;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private String remark;
 
-	public String getText() {
-		return text;
-	}
+    /**
+     * 图标
+     */
+    private String icon;
+    /**
+     * url
+     */
+    private String url;
+    /**
+     * permission
+     */
+    private String perms;
 
-	public void setText(String text) {
-		this.text = text;
-	}
+    private String createBy;
 
-	public Map<String, Object> getState() {
-		return state;
-	}
+    private String createTime;
 
-	public void setState(Map<String, Object> state) {
-		this.state = state;
-	}
+    private String updateBy;
 
-	public boolean isChecked() {
-		return checked;
-	}
+    private String updateTime;
 
-	public void setChecked(boolean checked) {
-		this.checked = checked;
-	}
+    /**
+     * 节点属性
+     */
+    private Map<String, Object> attributes;
 
-	public Map<String, Object> getAttributes() {
-		return attributes;
-	}
+    /**
+     * 节点的子节点
+     * = new ArrayList<>()
+     */
+    private List<TreeModel<T>> children;
 
-	public void setAttributes(Map<String, Object> attributes) {
-		this.attributes = attributes;
-	}
+    /**
+     * 是否有父节点
+     */
+    private boolean hasParent = false;
+    /**
+     * 是否有子节点
+     */
+    private boolean hasChildren = false;
 
-	public List<TreeModel<T>> getChildren() {
-		return children;
-	}
-
-	public void setChildren(List<TreeModel<T>> children) {
-		this.children = children;
-	}
-
-	public boolean isHasParent() {
-		return hasParent;
-	}
-
-	public void setHasParent(boolean isParent) {
-		this.hasParent = isParent;
-	}
-
-	public boolean isHasChildren() {
-		return hasChildren;
-	}
-
-	public void setChildren(boolean isChildren) {
-		this.hasChildren = isChildren;
-	}
-
-	public String getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public TreeModel() {
-		super();
-	}
-
-	@Override
-	public String toString() {
-
-		return JSON.toJSONString(this);
-	}
 
 }

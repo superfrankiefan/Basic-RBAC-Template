@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface DeptService extends IService<Dept> {
 
-	TreeModel<Dept> getDeptTree();
+	List<TreeModel<Dept>> getDeptTree(String deptCode, String deptName, int status);
 
 	List<Dept> findAllDepts(Dept dept);
 

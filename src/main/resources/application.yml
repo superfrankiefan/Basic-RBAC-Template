@@ -14,12 +14,12 @@ spring:
         config:
           enabled: true
       initial-size: 5
-      max-active: 20
-      max-open-prepared-statements: 50
-      max-pool-prepared-statement-per-connection-size: 20
+      max-active: 10
+      max-open-prepared-statements: 20
+      max-pool-prepared-statement-per-connection-size: 5
       max-wait: 60000
       min-evictable-idle-time-millis: 300000
-      min-idle: 10
+      min-idle: 1
       pool-prepared-statements: true
       url: jdbc:mysql://127.0.0.1:3306/rbac?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       username: root

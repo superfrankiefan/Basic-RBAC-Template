@@ -1,5 +1,6 @@
 package com.sff.rbacdemo.common.config.shiro;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.sff.rbacdemo.common.utils.JWTUtil;
 import com.sff.rbacdemo.system.entity.Resource;
 import com.sff.rbacdemo.system.entity.Role;
@@ -7,6 +8,7 @@ import com.sff.rbacdemo.system.entity.User;
 import com.sff.rbacdemo.system.service.ResourceService;
 import com.sff.rbacdemo.system.service.RoleService;
 import com.sff.rbacdemo.system.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.*;
@@ -27,10 +29,9 @@ import java.util.stream.Collectors;
  * 自定义认证和授权规则
  */
 
+@Slf4j(topic = "ShiroRealm.class")
 @Service
 public class ShiroRealm extends AuthorizingRealm {
-
-    private static final Logger LOGGER = LogManager.getLogger(ShiroRealm.class);
 
     private UserService userService;
 
@@ -56,10 +57,10 @@ public class ShiroRealm extends AuthorizingRealm {
     /**
      * 大坑！，必须重写此方法，不然Shiro会报错
      */
-//    @Override
-//    public boolean supports(AuthenticationToken token) {
-//        return token instanceof JWTToken;
-//    }
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof JWTToken;
+    }
 
     /**
      * 只有当需要检测用户权限的时候才会调用此方法，例如checkRole,checkPermission之类的
@@ -86,18 +87,21 @@ public class ShiroRealm extends AuthorizingRealm {
      * 默认使用此方法进行用户名正确与否验证，错误抛出异常即可。
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
-        // 获取用户输入的用户名和密码
-        String userName = (String) auth.getPrincipal();
-        if (userName == null) {
-            throw new AuthenticationException("token无效");
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException, JWTVerificationException {
+        String token = (String) auth.getCredentials();
+        //Decrypt to get the user name, which is used to compare with the database
+        String username = JWTUtil.getUsername(token);
+        if (username == null) {
+            throw new AuthenticationException("token invalid");
         }
-        String password = new String((char[]) auth.getCredentials());
-
         // 通过用户名到数据库查询用户信息
-        User user = userService.findByName(userName);
-        if (!password.equals(user.getPassword()))
-            throw new IncorrectCredentialsException("密码错误！");
-        return new SimpleAuthenticationInfo(user, password, getName());
+        User user = userService.findByName(username);
+        if (user == null) {
+            throw new AuthenticationException("User didn't existed!");
+        }
+        if (!JWTUtil.verify(token, username, user.getPassword())) {
+            throw new JWTVerificationException("Invalid Token!");
+        }
+        return new SimpleAuthenticationInfo(user, token, getName());
     }
 }
