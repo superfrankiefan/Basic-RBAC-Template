@@ -31,7 +31,7 @@ import java.util.List;
  */
 @Slf4j
 @Controller
-public class LoginController extends BaseController {
+public class LogInOutMgmt extends BaseController {
 
     @Autowired
     private UserService userService;

@@ -14,15 +14,16 @@ public interface RoleService extends IService<Role> {
 
 	List<Role> findUserRole(String userName);
 
-	List<Role> findAllRole();
-
 	/**
 	 * 分页获取角色信息
+	 *
+	 * @param status
+	 * @param roleName
 	 * @param page
 	 * @param count
 	 * @return
 	 */
-	PageResponseDTO<Role> getRoleByPage(Integer page, Integer count);
+	PageResponseDTO<Role> getRoleByPage(int status, String roleName, Integer page, Integer count);
 	
 	RoleWithResource findRoleWithResources(Long roleId);
 

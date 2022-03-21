@@ -3,26 +3,44 @@ package com.sff.rbacdemo.system.controller;
 import com.sff.rbacdemo.common.annotation.Log;
 import com.sff.rbacdemo.common.controller.BaseController;
 import com.sff.rbacdemo.common.model.APIResponse;
+import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.common.utils.MD5Utils;
 import com.sff.rbacdemo.system.entity.User;
 import com.sff.rbacdemo.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * @author Frankie Fan
+ * @date 2022-03-21 12:12
+ * Account Management
+ */
 
 @Slf4j
 @RestController
-@RequestMapping("/user")
-public class UserController extends BaseController {
+@RequestMapping("/system/account")
+public class AccountMgmt extends BaseController {
 
     @Autowired
     private UserService userService;
 
     private static final String ON = "on";
+
+    @GetMapping("getAccountList")
+    @ResponseBody
+    @RequiresAuthentication
+    public APIResponse getAccountListByDept(@RequestParam(required = false) String deptId,
+                                            @RequestParam(required = false) String username,
+                                            @RequestParam(required = false) String realName,
+                                            @RequestParam(required = false, defaultValue = "0") Integer page,
+                                            @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        PageResponseDTO<User> accounts = this.userService.getUserListByDept(deptId, username, realName, page, pageSize);
+        return APIResponse.OK("accounts", accounts);
+    }
 
     @Log("新增用户")
     @RequiresPermissions("user:add")
@@ -95,4 +113,5 @@ public class UserController extends BaseController {
             return APIResponse.ERROR(GlobalConstant.HTTP_500, "更改密码失败，请联系网站管理员！", e);
         }
     }
+
 }

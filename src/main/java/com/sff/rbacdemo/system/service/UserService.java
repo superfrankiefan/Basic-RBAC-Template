@@ -12,7 +12,7 @@ public interface UserService extends IService<User> {
 
     UserInfoDTO getCurrentUserInfo();
 
-    PageResponseDTO<User> getUserListByDept(String deptId, int page, int count);
+    PageResponseDTO<User> getUserListByDept(String deptId, String username, String realName, int page, int count);
 
     User findByName(String userName);
 

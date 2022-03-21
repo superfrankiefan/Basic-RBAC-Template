@@ -14,8 +14,6 @@ import com.sff.rbacdemo.system.service.RoleResourceServie;
 import com.sff.rbacdemo.system.service.RoleService;
 import com.sff.rbacdemo.system.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -60,9 +58,14 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public PageResponseDTO<Role> getRoleByPage(Integer page, Integer count) {
+    public PageResponseDTO<Role> getRoleByPage(int status, String roleName, Integer page, Integer count) {
         Page<Role> pager = new Page<>(page, count);
-        IPage<Role> paging = this.roleMapper.selectPage(pager, null);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("STATUS", status);
+        if(roleName != null && !roleName.isEmpty()){
+            queryWrapper.like("ROLE_NAME", roleName);
+        }
+        IPage<Role> paging = this.roleMapper.selectPage(pager, queryWrapper);
         PageResponseDTO pageResponseDTO = new PageResponseDTO();
         pageResponseDTO.setPage(paging.getCurrent());
         pageResponseDTO.setCount(paging.getSize());
