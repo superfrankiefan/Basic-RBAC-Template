@@ -39,5 +39,9 @@ public interface DeptService extends IService<Dept> {
 	 */
 	void updateDept(Dept dept);
 
+	/**
+	 * 删除部门
+	 * @param deptIds
+	 */
 	void deleteDepts(String deptIds);
 }

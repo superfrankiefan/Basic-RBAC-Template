@@ -34,6 +34,12 @@ public interface RoleService extends IService<Role> {
 	List<Role> getAllRole(int status);
 
 
+	/**
+	 * 获取角色菜单
+	 *
+	 * @param roleId
+	 * @return
+	 */
 	String[] getRoleMenus(String roleId);
 
 	/**
@@ -43,8 +49,6 @@ public interface RoleService extends IService<Role> {
 	 * @param status
 	 */
 	void setRoleStatus(String roleCode, String status);
-	
-	RoleWithResource findRoleWithResources(Long roleId);
 
 	/**
 	 * 根据RoleCode查询

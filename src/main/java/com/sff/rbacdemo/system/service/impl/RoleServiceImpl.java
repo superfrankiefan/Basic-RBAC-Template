@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.system.dto.RoleAndMenus;
-import com.sff.rbacdemo.system.dto.RoleWithResource;
 import com.sff.rbacdemo.system.entity.Role;
 import com.sff.rbacdemo.system.entity.RoleResource;
 import com.sff.rbacdemo.system.mapper.RoleMapper;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j(topic = "RoleServiceImpl")
 @Service("roleService")
@@ -129,17 +127,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         list.stream().forEach(s -> this.roleMapper.deleteById(Long.valueOf(s)));
         this.roleResourceService.deleteRoleResourcesByRoleIds(roleIds);
         this.userRoleService.deleteUserRolesByRoleId(roleIds);
-    }
-
-    @Override
-    public RoleWithResource findRoleWithResources(Long roleId) {
-        List<RoleWithResource> list = this.roleMapper.findById(roleId);
-        List<Long> resourceList = list.stream().map(RoleWithResource::getResourceId).collect(Collectors.toList());
-        if (list.isEmpty())
-            return null;
-        RoleWithResource roleWithResource = list.get(0);
-        roleWithResource.setResourceIds(resourceList);
-        return roleWithResource;
     }
 
 }
