@@ -46,9 +46,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public PageResponseDTO<Role> getRoleByPage(String roleName, Integer page, Integer count) {
+    public PageResponseDTO<Role> getRoleByPage(String roleName, String status, Integer page, Integer count) {
         Page<Role> pager = new Page<>(page, count);
         QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("STATUS", status);
         queryWrapper.orderByAsc("ROLE_CODE");
         if(roleName != null && !roleName.isEmpty()){
             queryWrapper.like("ROLE_NAME", roleName);
@@ -69,6 +70,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         queryWrapper.orderByAsc("ROLE_CODE");
         List<Role> roles = this.roleMapper.selectList(queryWrapper);
         return roles;
+    }
+
+    @Override
+    public String[] getRoleMenus(String roleId) {
+        return this.roleResourceMapper.getResourceIds(Long.valueOf(roleId));
     }
 
     @Override

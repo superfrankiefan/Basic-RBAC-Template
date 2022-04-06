@@ -23,7 +23,7 @@ public interface RoleService extends IService<Role> {
 	 * @param count
 	 * @return
 	 */
-	PageResponseDTO<Role> getRoleByPage(String roleName, Integer page, Integer count);
+	PageResponseDTO<Role> getRoleByPage(String roleName, String status, Integer page, Integer count);
 
 	/**
 	 * 获取所有角色，根据状态进行筛选
@@ -32,6 +32,9 @@ public interface RoleService extends IService<Role> {
 	 * @return
 	 */
 	List<Role> getAllRole(int status);
+
+
+	String[] getRoleMenus(String roleId);
 
 	/**
 	 * 设置角色状态

@@ -12,6 +12,9 @@
         delete from t_role_resource where ROLE_ID = #{roleId}
     </delete>
     <delete id="deleteByResourceId" parameterType="java.lang.Long">
-        delete from t_role_resource where resource_id = #{resource_id}
+        delete from t_role_resource where RESOURCE_ID = #{resourceId}
     </delete>
+    <select id="getResourceIds" parameterType="java.lang.Long" resultType="java.lang.String">
+        select RESOURCE_ID from t_role_resource where ROLE_ID = #{roleId}
+    </select>
 </mapper>

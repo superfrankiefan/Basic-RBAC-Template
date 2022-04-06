@@ -32,10 +32,11 @@ public class RoleMgmt extends BaseController {
     @ResponseBody
     @RequiresAuthentication
     public APIResponse<PageResponseDTO> getRoleListByPage(@RequestParam(required = false) String roleName,
+                                                          @RequestParam(required = false, defaultValue = GlobalConstant.STATUS_VALID) String status,
                                                           @RequestParam(required = false, defaultValue = "0") Integer page,
                                                           @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
 
-        PageResponseDTO pageRoles = roleService.getRoleByPage(roleName, page, pageSize);
+        PageResponseDTO pageRoles = roleService.getRoleByPage(roleName, status, page, pageSize);
         return APIResponse.OK("Get Roles by Page", pageRoles);
     }
 
@@ -79,5 +80,12 @@ public class RoleMgmt extends BaseController {
     public APIResponse deleteRole(@RequestBody Map<String, String> roleIds) {
         this.roleService.deleteRoles(roleIds.get("roleIds"));
         return APIResponse.OK("Delete Roles", null);
+    }
+
+    @GetMapping("getRoleMenus")
+    @ResponseBody
+    @RequiresAuthentication
+    public APIResponse getRoleMenus(@RequestParam(required = true) String roleId) {
+        return APIResponse.OK("Get Role Menus", this.roleService.getRoleMenus(roleId));
     }
 }

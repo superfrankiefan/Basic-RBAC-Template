@@ -5,6 +5,14 @@ import com.sff.rbacdemo.system.entity.RoleResource;
 
 public interface RoleResourceMapper extends BaseMapper<RoleResource> {
 
+
+    /**
+     * 获取角色对应的资源ID
+     * @param roleId
+     * @return
+     */
+    public String[] getResourceIds(Long roleId);
+
     /**
      * 根据角色ID删除角色资源
      * @param roleId
