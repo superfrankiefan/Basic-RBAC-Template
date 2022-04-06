@@ -11,16 +11,32 @@ import java.util.List;
  */
 public interface DeptService extends IService<Dept> {
 
+	/**
+	 * 查询部门
+	 * @param deptCode
+	 * @param deptName
+	 * @param status
+	 * @return
+	 */
 	List<TreeModel<Dept>> getDeptTree(String deptCode, String deptName, int status);
 
-	List<Dept> findAllDepts(Dept dept);
+	/**
+	 * 根据部门编码获取部门信息
+	 * @param deptCode
+	 * @return
+	 */
+	Dept findByDeptCode(String deptCode);
 
-	Dept findByName(String deptName);
-
-	Dept findById(Long deptId);
-	
+	/**
+	 * 增加新的部门
+	 * @param dept
+	 */
 	void addDept(Dept dept);
-	
+
+	/**
+	 * 更新部门信息
+	 * @param dept
+	 */
 	void updateDept(Dept dept);
 
 	void deleteDepts(String deptIds);

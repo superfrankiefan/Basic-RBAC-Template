@@ -8,18 +8,18 @@
     <result column="DEPT_ID" jdbcType="DECIMAL" property="deptId" />
     <result column="PARENT_ID" jdbcType="DECIMAL" property="parentId" />
     <result column="DEPT_NAME" jdbcType="VARCHAR" property="deptName" />
-    <result column="ORDER_NUM" jdbcType="DECIMAL" property="orderNum" />
+    <result column="ORDER_NUM" jdbcType="DECIMAL" property="orderNo" />
   </resultMap>
   
   <update id="changeToTop" parameterType="java.util.List">
-  	update t_dept set parent_id = 0 where dept_id in ( select a.dept_id from (
-  	(select dept_id from t_dept where parent_id in 
+  	update t_dept set PARENT_ID = 100000 where DEPT_ID in ( select a.DEPT_ID from (
+  	(select DEPT_ID from t_dept where PARENT_ID in
   	<foreach collection="list" item="deptId" index="index" open="(" close=")" separator=",">
   		#{deptId}
   	</foreach>
   	) ) a )
   </update>
     <select id="selectAll" resultType="com.sff.rbacdemo.system.entity.Dept">
-        select * from t_dept order by dept_id
+        select * from t_dept order by DEPT_ID
     </select>
 </mapper>
