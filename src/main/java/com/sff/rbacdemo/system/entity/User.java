@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.sff.rbacdemo.common.model.BaseEntity;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
 import lombok.Data;
@@ -18,6 +20,7 @@ public class User extends BaseEntity {
 
     public static final String DEFAULT_AVATAR = "default.jpg";
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @TableId(value = "USER_ID", type = IdType.ASSIGN_ID)
     private Long userId;
 
@@ -33,6 +36,7 @@ public class User extends BaseEntity {
     @TableField("PASSWORD")
     private String password;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @TableField("DEPT_ID")
     private Long deptId;
 

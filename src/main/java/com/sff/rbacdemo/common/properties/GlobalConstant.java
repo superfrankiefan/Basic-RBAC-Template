@@ -15,6 +15,7 @@ public interface GlobalConstant {
     public static final Integer HTTP_401 = 401;
     public static final Integer TOKEN_EXPIRE = 411;
     public static final Integer TOKEN_INVALID = 410;
+    public static final Integer REQ_PARAM_ERROR = 301;
 
     /**
      * 业务返回类型
@@ -49,7 +50,7 @@ public interface GlobalConstant {
 
     public static final String STATUS_INVALID = "2";
 
-    public static final String STATUS_DELETE = "-1";
+    public static final String STATUS_DELETE = "3";
 
     /**
      * Tree Root ID

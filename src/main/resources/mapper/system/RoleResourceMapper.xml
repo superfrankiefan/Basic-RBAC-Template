@@ -9,9 +9,9 @@
         <result column="RESOURCE_ID" jdbcType="DECIMAL" property="resourceId"/>
     </resultMap>
     <delete id="deleteByRoleId" parameterType="java.lang.Long">
-        delete from t_role_resource where role_id = ${role_id}
+        delete from t_role_resource where ROLE_ID = #{roleId}
     </delete>
     <delete id="deleteByResourceId" parameterType="java.lang.Long">
-        delete from t_role_resource where resource_id = ${resource_id}
+        delete from t_role_resource where resource_id = #{resource_id}
     </delete>
 </mapper>

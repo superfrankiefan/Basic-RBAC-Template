@@ -127,7 +127,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         resource.setCreateTime(new Date());
         if (resource.getParentId() == null)
             resource.setParentId(0L);
-        if (GlobalConstant.RES_TYPE_BTN.equals(resource.getType())) {
+        if (GlobalConstant.RES_TYPE_BTN == resource.getType()) {
             resource.setPath(null);
             resource.setIcon(null);
         }
@@ -181,7 +181,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         resource.setUpdateTime(new Date());
         if (resource.getParentId() == null)
             resource.setParentId(0L);
-        if (GlobalConstant.RES_TYPE_BTN.equals(resource.getType())) {
+        if (GlobalConstant.RES_TYPE_BTN == resource.getType()) {
             resource.setPath(null);
             resource.setIcon(null);
         }

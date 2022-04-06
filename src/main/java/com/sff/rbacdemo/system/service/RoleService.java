@@ -2,6 +2,7 @@ package com.sff.rbacdemo.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
+import com.sff.rbacdemo.system.dto.RoleAndMenus;
 import com.sff.rbacdemo.system.dto.RoleWithResource;
 import com.sff.rbacdemo.system.entity.Role;
 
@@ -17,21 +18,56 @@ public interface RoleService extends IService<Role> {
 	/**
 	 * 分页获取角色信息
 	 *
-	 * @param status
 	 * @param roleName
 	 * @param page
 	 * @param count
 	 * @return
 	 */
-	PageResponseDTO<Role> getRoleByPage(int status, String roleName, Integer page, Integer count);
+	PageResponseDTO<Role> getRoleByPage(String roleName, Integer page, Integer count);
+
+	/**
+	 * 获取所有角色，根据状态进行筛选
+	 *
+	 * @param status
+	 * @return
+	 */
+	List<Role> getAllRole(int status);
+
+	/**
+	 * 设置角色状态
+	 *
+	 * @param roleCode
+	 * @param status
+	 */
+	void setRoleStatus(String roleCode, String status);
 	
 	RoleWithResource findRoleWithResources(Long roleId);
 
-	Role findByName(String roleName);
+	/**
+	 * 根据RoleCode查询
+	 * @param roleCode
+	 * @return
+	 */
+	Role findByRoleCode(String roleCode);
 
-	void addRole(Role role, Long[] resourceIds);
-	
-	void updateRole(Role role, Long[] resourceIds);
+	/**
+	 * 新增角色
+	 *
+	 * @param roleAndMenus
+	 */
+	void addRole(RoleAndMenus roleAndMenus);
 
+	/**
+	 * 更新角色
+	 *
+	 * @param roleAndMenus
+	 */
+	void updateRole(RoleAndMenus roleAndMenus);
+
+	/**
+	 * 删除角色
+	 *
+	 * @param roleIds
+	 */
 	void deleteRoles(String roleIds);
 }

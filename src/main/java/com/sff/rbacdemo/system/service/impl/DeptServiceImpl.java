@@ -52,7 +52,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
 			tree.setCode(dept.getDeptCode());
 			tree.setOrderNo(dept.getOrderNo());
 			tree.setRemark(dept.getRemark());
-			tree.setStatus(String.valueOf(dept.getStatus()));
+			tree.setStatus(dept.getStatus());
 			tree.setCreateBy(dept.getCreateBy().toString());
 			tree.setCreateTime(dept.getCreateTime().toString());
 			tree.setUpdateBy(dept.getUpdateBy().toString());

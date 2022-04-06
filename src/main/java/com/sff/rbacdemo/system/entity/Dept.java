@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.sff.rbacdemo.common.model.BaseEntity;
 import lombok.Data;
 
@@ -13,6 +15,7 @@ public class Dept extends BaseEntity {
 
     private static final long serialVersionUID = -7790334862410409053L;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     @TableId(value = "DEPT_ID", type = IdType.ASSIGN_ID)
     private Long deptId;
 
@@ -26,7 +29,7 @@ public class Dept extends BaseEntity {
     private String deptName;
 
     @TableField("STATUS")
-    private int status;
+    private String status;
 
     @TableField("ORDER_NO")
     private int orderNo;

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
+import com.sff.rbacdemo.system.dto.RoleAndMenus;
 import com.sff.rbacdemo.system.dto.RoleWithResource;
 import com.sff.rbacdemo.system.entity.Role;
 import com.sff.rbacdemo.system.entity.RoleResource;
@@ -16,18 +17,15 @@ import com.sff.rbacdemo.system.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j(topic = "RoleServiceImpl")
 @Service("roleService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
+@Transactional
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired
@@ -48,20 +46,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public List<Role> findAllRole() {
-        try {
-            return this.roleMapper.findAll();
-        } catch (Exception e) {
-            log.error("获取角色信息失败", e);
-            return new ArrayList<>();
-        }
-    }
-
-    @Override
-    public PageResponseDTO<Role> getRoleByPage(int status, String roleName, Integer page, Integer count) {
+    public PageResponseDTO<Role> getRoleByPage(String roleName, Integer page, Integer count) {
         Page<Role> pager = new Page<>(page, count);
         QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("STATUS", status);
+        queryWrapper.orderByAsc("ROLE_CODE");
         if(roleName != null && !roleName.isEmpty()){
             queryWrapper.like("ROLE_NAME", roleName);
         }
@@ -75,25 +63,54 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public Role findByName(String roleName) {
+    public List<Role> getAllRole(int status) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("STATUS", status);
+        queryWrapper.orderByAsc("ROLE_CODE");
+        List<Role> roles = this.roleMapper.selectList(queryWrapper);
+        return roles;
+    }
+
+    @Override
+    public void setRoleStatus(String roleCode, String status) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        Role role = this.roleMapper.selectOne(queryWrapper);
+        if (role != null) {
+            role.setStatus(status);
+            this.roleMapper.updateById(role);
+        }
+    }
+
+    @Override
+    public Role findByRoleCode(String roleCode) {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("roleName", roleName);
+        queryWrapper.eq("ROLE_CODE", roleCode);
         Role role = this.roleMapper.selectOne(queryWrapper);
         return role;
     }
 
     @Override
     @Transactional
-    public void addRole(Role role, Long[] resourceIds) {
-        role.setCreateTime(new Date());
-        this.save(role);
-        setRoleResources(role, resourceIds);
+    public void addRole(RoleAndMenus roleAndMenus) {
+        Role role = (Role) roleAndMenus;
+        this.roleMapper.insert(role);
+        String[] menus = roleAndMenus.getMenuIds().split(",");
+        setRoleResources(role, menus);
     }
 
-    private void setRoleResources(Role role, Long[] resourceIds) {
+    @Override
+    @Transactional
+    public void updateRole(RoleAndMenus roleAndMenus) {
+        Role role = (Role) roleAndMenus;
+        this.roleMapper.updateById(role);
+        this.roleResourceMapper.deleteByRoleId(role.getRoleId());
+        setRoleResources(role, roleAndMenus.getMenuIds().split(","));
+    }
+
+    private void setRoleResources(Role role, String[] resourceIds) {
         Arrays.stream(resourceIds).forEach(resourceId -> {
             RoleResource rm = new RoleResource();
-            rm.setResourceId(resourceId);
+            rm.setResourceId(Long.valueOf(resourceId));
             rm.setRoleId(role.getRoleId());
             this.roleResourceMapper.insert(rm);
         });
@@ -103,7 +120,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Transactional
     public void deleteRoles(String roleIds) {
         List<String> list = Arrays.asList(roleIds.split(","));
-        this.roleMapper.deleteBatchIds(list);
+        list.stream().forEach(s -> this.roleMapper.deleteById(Long.valueOf(s)));
         this.roleResourceService.deleteRoleResourcesByRoleIds(roleIds);
         this.userRoleService.deleteUserRolesByRoleId(roleIds);
     }
@@ -117,15 +134,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         RoleWithResource roleWithResource = list.get(0);
         roleWithResource.setResourceIds(resourceList);
         return roleWithResource;
-    }
-
-    @Override
-    @Transactional
-    public void updateRole(Role role, Long[] resourceIds) {
-        role.setUpdateTime(new Date());
-        this.roleMapper.insert(role);
-        this.roleResourceMapper.deleteByRoleId(role.getRoleId());
-        setRoleResources(role, resourceIds);
     }
 
 }

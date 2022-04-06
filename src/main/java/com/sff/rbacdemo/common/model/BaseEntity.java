@@ -3,6 +3,8 @@ package com.sff.rbacdemo.common.model;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -22,6 +24,7 @@ public class BaseEntity implements Serializable {
     private static final long serialVersionUID = -4852732617765810959L;
 
     /** 创建人 */
+    @JsonSerialize(using = ToStringSerializer.class)
     @TableField(value = "CREATE_BY", fill = FieldFill.INSERT)
     private Long createBy;
     /** 创建时间 */
@@ -30,6 +33,7 @@ public class BaseEntity implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /** 更新人 */
+    @JsonSerialize(using = ToStringSerializer.class)
     @TableField(value = "UPDATE_BY", fill = FieldFill.INSERT_UPDATE)
     private Long updateBy;
     /** 更新时间 */
