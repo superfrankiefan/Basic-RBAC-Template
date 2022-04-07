@@ -18,7 +18,7 @@ public class TreeUtils {
 		List<TreeModel<T>> topNodes = new ArrayList<>();
 		nodes.forEach(child -> {
 			String pid = child.getParentId();
-			if (pid == null || "100".equals(pid)) {
+			if (pid == null || GlobalConstant.ROOT_ID.equals(pid)) {
 				topNodes.add(child);
 				return;
 			}
@@ -34,7 +34,7 @@ public class TreeUtils {
 		});
 
 		TreeModel<T> root = new TreeModel<>();
-		root.setId("100");
+		root.setId(GlobalConstant.ROOT_ID);
 		root.setOrderNo(1);
 		root.setCode("ROOT");
 		root.setHasParent(false);
@@ -43,9 +43,9 @@ public class TreeUtils {
 		root.setChildren(topNodes);
 		root.setText("根节点");
 		root.setCreateBy("admin");
-		root.setCreateTime(new Date().toString());
+		root.setCreateTime(new Date());
 		root.setUpdateBy("admin");
-		root.setUpdateTime(new Date().toString());
+		root.setUpdateTime(new Date());
 		root.setStatus(GlobalConstant.STATUS_VALID);
 		return root;
 	}

@@ -2,8 +2,8 @@ package com.sff.rbacdemo.common.model;
 
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class TreeModel<T> {
@@ -33,30 +33,41 @@ public class TreeModel<T> {
     private String remark;
 
     /**
-     * 图标
+     * 菜单使用的字段
+     * 1、图标
+     * 2、组件/路径
+     * 3、权限标识
+     * 4、外部链接
+     * 5、是否缓存页面
+     * 6、是否显示菜单
+     * 7、隐藏子菜单
+     * 8、动态路由允许打开的最大页签
+     * 9、动态路由的实际Path, 即去除路由的动态部分;
+     * 10、实际路由
+     * 11、当前激活的菜单。用于配置详情页时左侧激活的菜单路径
+     * 12、路由重定向
      */
     private String icon;
-    /**
-     * url
-     */
-    private String url;
-    /**
-     * permission
-     */
+    private String path;
+    private String component;
     private String perms;
+    private boolean isExt;
+    private boolean keepalive;
+    private boolean isShow;
+    private String realPath;
+    private String currentActiveMenu;
+    private String redirect;
 
+    /**
+     * 审计字段
+     */
     private String createBy;
 
-    private String createTime;
+    private Date createTime;
 
     private String updateBy;
 
-    private String updateTime;
-
-    /**
-     * 节点属性
-     */
-    private Map<String, Object> attributes;
+    private Date updateTime;
 
     /**
      * 节点的子节点

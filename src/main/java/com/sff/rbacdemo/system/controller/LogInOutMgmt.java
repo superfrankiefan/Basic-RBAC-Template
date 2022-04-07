@@ -110,14 +110,14 @@ public class LogInOutMgmt extends BaseController {
     }
 
     @Log("获取用户菜单")
-    @RequestMapping("getMenuList")
+    @RequestMapping("getRouteList")
     @RequiresAuthentication
     @ResponseBody
-    public APIResponse<List> getUserMenuList() {
+    public APIResponse<List> getUserRouteList() {
         // dashboard
         Meta dashboardMeta = new Meta();
         dashboardMeta.setTitle("routes.dashboard.dashboard");
-        dashboardMeta.setHideChildrenInMenu(true);
+        dashboardMeta.setHideChildrenInMenu(false);
         dashboardMeta.setIcon("bx:bx-home");
         RouteDTO dashboardRoute = new RouteDTO();
         dashboardRoute.setPath("/dashboard");
@@ -128,8 +128,8 @@ public class LogInOutMgmt extends BaseController {
         dashboardRoute.setMeta(dashboardMeta);
         // dashboard analysis
         Meta analysisMeta = new Meta();
-        analysisMeta.setHideMenu(true);
-        analysisMeta.setHideBreadcrumb(true);
+        analysisMeta.setHideMenu(false);
+        analysisMeta.setHideBreadcrumb(false);
         analysisMeta.setTitle("routes.dashboard.analysis");
         analysisMeta.setCurrentActiveMenu("/dashboard");
         analysisMeta.setIcon("bx:bx-home");
@@ -141,8 +141,8 @@ public class LogInOutMgmt extends BaseController {
         analysisRoute.setMeta(analysisMeta);
         // dashboard workbench
         Meta workbenchMeta = new Meta();
-        workbenchMeta.setHideMenu(true);
-        workbenchMeta.setHideBreadcrumb(true);
+        workbenchMeta.setHideMenu(false);
+        workbenchMeta.setHideBreadcrumb(false);
         workbenchMeta.setTitle("routes.dashboard.workbench");
         workbenchMeta.setCurrentActiveMenu("/dashboard");
         workbenchMeta.setIcon("bx:bx-home");
@@ -160,7 +160,7 @@ public class LogInOutMgmt extends BaseController {
         // system management
         Meta sysMeta = new Meta();
         sysMeta.setIcon("ion:settings-outline");
-        sysMeta.setTitle("routes.demo.system.moduleName");
+        sysMeta.setTitle("routes.biz.system.moduleName");
         RouteDTO sysRoute = new RouteDTO();
         sysRoute.setComponent("LAYOUT");
         sysRoute.setPath("/system");
@@ -171,7 +171,7 @@ public class LogInOutMgmt extends BaseController {
         // system account mgmt
         Meta accountMeta = new Meta();
         accountMeta.setIgnoreKeepAlive(true);
-        accountMeta.setTitle("routes.demo.system.account");
+        accountMeta.setTitle("routes.biz.system.account");
         RouteDTO accountRoute = new RouteDTO();
         accountRoute.setComponent("/biz/system/account/index");
         accountRoute.setPath("account");
@@ -181,7 +181,7 @@ public class LogInOutMgmt extends BaseController {
         // system account detail
         Meta accountDetailMeta = new Meta();
         accountDetailMeta.setHideMenu(true);
-        accountDetailMeta.setTitle("routes.demo.system.account_detail");
+        accountDetailMeta.setTitle("routes.biz.system.account_detail");
         accountDetailMeta.setCurrentActiveMenu("/system/account");
         accountDetailMeta.setIgnoreKeepAlive(true);
         RouteDTO accountDetailRoute = new RouteDTO();
@@ -193,7 +193,7 @@ public class LogInOutMgmt extends BaseController {
         // system role mgmt
         Meta roleMeta = new Meta();
         roleMeta.setIgnoreKeepAlive(true);
-        roleMeta.setTitle("routes.demo.system.role");
+        roleMeta.setTitle("routes.biz.system.role");
         RouteDTO roleRoute = new RouteDTO();
         roleRoute.setComponent("/biz/system/role/index");
         roleRoute.setPath("role");
@@ -203,7 +203,7 @@ public class LogInOutMgmt extends BaseController {
         // system menu mgmt
         Meta menuMeta = new Meta();
         menuMeta.setIgnoreKeepAlive(true);
-        menuMeta.setTitle("routes.demo.system.menu");
+        menuMeta.setTitle("routes.biz.system.menu");
         RouteDTO menuRoute = new RouteDTO();
         menuRoute.setComponent("/biz/system/menu/index");
         menuRoute.setPath("/menu");
@@ -213,7 +213,7 @@ public class LogInOutMgmt extends BaseController {
         // system dept mgmt
         Meta deptMeta = new Meta();
         deptMeta.setIgnoreKeepAlive(true);
-        deptMeta.setTitle("routes.demo.system.dept");
+        deptMeta.setTitle("routes.biz.system.dept");
         RouteDTO deptRoute = new RouteDTO();
         deptRoute.setComponent("/biz/system/dept/index");
         deptRoute.setPath("/dept");

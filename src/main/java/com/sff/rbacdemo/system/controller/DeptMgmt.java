@@ -29,7 +29,7 @@ public class DeptMgmt {
     @PostMapping("addOrUpdateDept")
     @ResponseBody
     @RequiresAuthentication
-    public APIResponse addDept(@RequestBody Dept dept){
+    public APIResponse addOrUpdateDept(@RequestBody Dept dept){
         if(dept != null & dept.getDeptCode() != null) {
             Dept department = deptService.findByDeptCode(dept.getDeptCode());
             if(department == null) {

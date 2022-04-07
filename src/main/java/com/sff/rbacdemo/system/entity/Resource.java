@@ -28,8 +28,17 @@ public class Resource extends BaseEntity {
 	@TableField("PATH")
 	private String path;
 
-//	@TableField("COMPONENT")
-//	private String component;
+	@TableField("COMPONENT")
+	private String component;
+
+	@TableField("REAL_PATH")
+	private String realPath;
+
+	@TableField("REDIRECT")
+	private String redirect;
+
+	@TableField("CURRENT_ACTIVE_MENU")
+	private String currentActiveMenu;
 
 	@TableField("PERMS")
 	private String perms;
@@ -44,6 +53,15 @@ public class Resource extends BaseEntity {
 	private int orderNo;
 
 	@TableField("STATUS")
-	private String resourceStatus;
+	private String status;
+
+	@TableField("IS_EXT")
+	private boolean isExt;
+
+	@TableField("KEEP_ALIVE")
+	private boolean keepalive;
+
+	@TableField("IS_SHOW")
+	private boolean isShow;
 
 }
