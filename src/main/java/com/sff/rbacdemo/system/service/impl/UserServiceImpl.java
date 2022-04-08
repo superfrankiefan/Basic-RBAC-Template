@@ -57,19 +57,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
 
     @Override
     @Transactional
-    public void registUser(User user) {
-        user.setAvatar(User.DEFAULT_AVATAR);
-        user.setGender(GlobalConstant.SEX_UNKNOW);
-        user.setPassword(MD5Utils.encrypt(user.getUsername().toLowerCase(), user.getPassword()));
-        this.save(user);
-//        UserRole ur = new UserRole();
-//        ur.setUserId(user.getUserId());
-//        ur.setRoleId(3L);
-//        this.userRoleMapper.insert(ur);
-    }
-
-    @Override
-    @Transactional
     public void addUser(User user, Long[] roles) {
         user.setCreateTime(new Date());
         user.setAvatar(User.DEFAULT_AVATAR);
@@ -102,7 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     @Transactional
     public void deleteUsers(String userIds) {
         List<String> list = Arrays.asList(userIds.split(","));
-        this.userMapper.deleteBatchIds(list);
+        list.stream().forEach(s -> this.userMapper.deleteById(Long.valueOf(s)));
         this.userRoleService.deleteUserRolesByUserId(userIds);
     }
 
@@ -124,17 +111,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         String newPassword = MD5Utils.encrypt(user.getUsername().toLowerCase(), password);
         ins.setPassword(newPassword);
         this.userMapper.updateById(ins);
-    }
-
-    @Override
-    public UserWithRole findById(Long userId) {
-        List<UserWithRole> list = this.userMapper.findUserWithRole(userId);
-        List<Long> roleList = list.stream().map(UserWithRole::getRoleId).collect(Collectors.toList());
-        if (list.isEmpty())
-            return null;
-        UserWithRole userWithRole = list.get(0);
-        userWithRole.setRoleIds(roleList);
-        return userWithRole;
     }
 
     @Override
@@ -178,21 +154,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
         pageResponseDTO.setTotal(paging.getTotal());
         pageResponseDTO.setItems(paging.getRecords());
         return pageResponseDTO;
-    }
-
-    @Override
-    public User findUserProfile(User user) {
-        return this.userMapper.findUserProfile(user);
-    }
-
-    @Override
-    @Transactional
-    public void updateUserProfile(User user) {
-        user.setUsername(null);
-        user.setPassword(null);
-        if (user.getDeptId() == null)
-            user.setDeptId(0L);
-        userMapper.updateById(user);
     }
 
 }

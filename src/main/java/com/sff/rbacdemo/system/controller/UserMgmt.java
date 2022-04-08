@@ -10,9 +10,10 @@ import com.sff.rbacdemo.system.entity.User;
 import com.sff.rbacdemo.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * @author Frankie Fan
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/system/account")
-public class AccountMgmt extends BaseController {
+public class UserMgmt extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -43,7 +44,7 @@ public class AccountMgmt extends BaseController {
     }
 
     @Log("新增用户")
-    @RequiresPermissions("user:add")
+    @RequiresAuthentication
     @RequestMapping("add")
     @ResponseBody
     public APIResponse addUser(User user, Long[] roles) {
@@ -61,7 +62,7 @@ public class AccountMgmt extends BaseController {
     }
 
     @Log("修改用户")
-    @RequiresPermissions("user:update")
+    @RequiresAuthentication
     @RequestMapping("update")
     @ResponseBody
     public APIResponse updateUser(User user, Long[] rolesSelect) {
@@ -79,12 +80,12 @@ public class AccountMgmt extends BaseController {
     }
 
     @Log("删除用户")
-    @RequiresPermissions("user:delete")
-    @RequestMapping("delete")
+    @RequiresAuthentication
+    @RequestMapping("deleteAccounts")
     @ResponseBody
-    public APIResponse deleteUsers(String ids) {
+    public APIResponse deleteUsers(@RequestBody Map<String, String> userIds) {
         try {
-            this.userService.deleteUsers(ids);
+            this.userService.deleteUsers(userIds.get("userIds"));
             return APIResponse.OK("删除用户成功！", null);
         } catch (Exception e) {
             log.error("删除用户失败", e);
@@ -99,6 +100,18 @@ public class AccountMgmt extends BaseController {
         User user = getCurrentUser();
         String encrypt = MD5Utils.encrypt(user.getUsername().toLowerCase(), password);
         return user.getPassword().equals(encrypt);
+    }
+
+    @Log("校验用户名")
+    @RequestMapping("accountExist")
+    @ResponseBody
+    public APIResponse accountExist(@RequestBody Map<String, String> username) {
+        String userName = username.get("username");
+        User user = this.userService.findByName(userName);
+        if(user == null) {
+            return APIResponse.OK("User Name is OK.", null);
+        }
+        return APIResponse.ERROR(Integer.valueOf(GlobalConstant.REQ_PARAM_ERROR), "User Name Exit.", user);
     }
 
     @Log("修改密码")

@@ -30,37 +30,6 @@
         where u.user_id = #{userId}
     </select>
 
-    <select id="findUserProfile" resultType="com.sff.rbacdemo.system.entity.User"
-            parameterType="com.sff.rbacdemo.system.entity.User">
-        SELECT
-        U .USERNAME,
-        U .USER_ID userId,
-        D .DEPT_NAME deptName,
-        U .mobile,
-        U .email,
-        U .avatar,
-        U .description,
-        U .gender,
-        U .dept_id deptId,
-        group_concat(r.role_name) AS roleName
-        FROM
-        t_user U
-        LEFT JOIN t_dept D ON U .DEPT_ID = D .DEPT_ID
-        LEFT JOIN t_user_role ur ON U .user_id = ur.user_id
-        LEFT JOIN t_role r ON r.role_id = ur.role_id
-        WHERE
-        U .USER_ID = #{userId}
-        GROUP BY
-        U .username,
-        D .dept_name,
-        U .mobile,
-        U .email,
-        U .avatar,
-        U .description,
-        U .gender,
-        U .USER_ID,
-        U .dept_id
-    </select>
     <select id="getUserInfo" resultType="com.sff.rbacdemo.system.dto.UserInfoDTO" parameterType="java.lang.Long">
         select u.user_id userId, u.real_name realName, u.username userName, u.avatar,
         ur.role_id roleId, r.role_code roleCode, r.role_name roleName, r.remark remark

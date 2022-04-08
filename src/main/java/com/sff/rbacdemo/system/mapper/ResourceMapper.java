@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ResourceMapper extends BaseMapper<Resource> {
 	
-//	List<Resource> findUserPermissions(String userName);
+	List<Resource> findUserPermissions(String userName);
 	
 //	List<Resource> findUserResources(String userName);
 

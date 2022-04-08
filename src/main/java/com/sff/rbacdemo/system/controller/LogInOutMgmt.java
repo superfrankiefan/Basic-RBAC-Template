@@ -71,23 +71,6 @@ public class LogInOutMgmt extends BaseController {
         return APIResponse.OK("登出成功", null);
     }
 
-    @PostMapping("regist")
-    @ResponseBody
-    public APIResponse<User> regist(@RequestBody User user) {
-        APIResponse<User> result = new APIResponse<>();
-        try {
-            User userIns = this.userService.findByName(user.getUsername());
-            if (userIns != null) {
-                return result.internalError("该用户名已被使用！");
-            }
-            this.userService.registUser(user);
-            return result.success("注册成功！");
-        } catch (Exception e) {
-            log.error("注册失败", e);
-            return result.internalError("注册失败，请联系网站管理员！");
-        }
-    }
-
     @Log("获取用户信息")
     @RequestMapping("getUserInfo")
     @RequiresAuthentication

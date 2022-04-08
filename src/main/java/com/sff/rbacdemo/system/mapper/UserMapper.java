@@ -30,10 +30,4 @@ public interface UserMapper extends BaseMapper<User> {
 	 */
 	List<UserInfoDTO> getUserInfo(Long userId);
 
-	/**
-	 * 查询用户信息包含角色和部门
-	 * @param user
-	 * @return
-	 */
-	User findUserProfile(User user);
 }

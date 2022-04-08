@@ -113,10 +113,10 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         this.resourceMapper.updateById(resource);
     }
 
-    //    @Override
-//    public List<Resource> findUserPermissions(String userName) {
-//        return this.resourceMapper.findUserPermissions(userName);
-//    }
+    @Override
+    public List<Resource> findUserPermissions(String userName) {
+        return this.resourceMapper.findUserPermissions(userName);
+    }
 //
 //    @Override
 //    public List<Resource> findUserResources(String userName) {

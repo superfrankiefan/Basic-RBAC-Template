@@ -41,7 +41,7 @@ public interface ResourceService extends IService<Resource> {
      */
     void deleteMenus(String resourceIds);
 
-    //    List<Resource> findUserPermissions(String userName);
+    List<Resource> findUserPermissions(String userName);
     //    List<Resource> findUserResources(String userName);
     //    List<Resource> findAllResources(Resource resource);
     //    TreeModel<Resource> getUserResource(String userName);
