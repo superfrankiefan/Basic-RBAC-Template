@@ -20,7 +20,7 @@ public class User extends BaseEntity {
 
     public static final String DEFAULT_AVATAR = "default.jpg";
 
-    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class) // 解决前后端Long类型数值精度问题
     @TableId(value = "USER_ID", type = IdType.ASSIGN_ID)
     private Long userId;
 
@@ -37,11 +37,8 @@ public class User extends BaseEntity {
     private String password;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    @TableField("DEPT_ID")
-    private Long deptId;
-
-    //非表字段
-    private transient String deptName;
+    @TableField("DEPT_CODE")
+    private String deptCode;
 
     @TableField("EMAIL")
     private String email;
@@ -60,9 +57,6 @@ public class User extends BaseEntity {
 
     @TableField("DESCRIPTION")
     private String description;
-
-    // 非表字段
-    private transient String roleName;
 
     @TableField("LAST_LOGIN_TIME")
     private Date lastLoginTime;

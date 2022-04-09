@@ -2,16 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sff.rbacdemo.system.mapper.UserRoleMapper">
   <resultMap id="BaseResultMap" type="com.sff.rbacdemo.system.entity.UserRole">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
-    <result column="ROLE_ID" jdbcType="DECIMAL" property="roleId" />
+    <result column="USERNAME" jdbcType="DECIMAL" property="userName" />
+    <result column="ROLE_CODE" jdbcType="DECIMAL" property="roleCode" />
   </resultMap>
-  <delete id="deleteByUserId" parameterType="java.lang.Long">
-    delete from t_user_role where user_id = #{user_id}
+  <delete id="deleteByUserName" parameterType="java.lang.String">
+    delete from t_user_role where USERNAME = #{userName}
   </delete>
-  <delete id="deleteByRoleId" parameterType="java.lang.Long">
-    delete from t_user_role where user_id = #{role_id}
+  <delete id="deleteByRoleCode" parameterType="java.lang.String">
+    delete from t_user_role where ROLE_CODE = #{roleCode}
   </delete>
 </mapper>

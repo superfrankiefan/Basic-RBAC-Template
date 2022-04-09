@@ -5,12 +5,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sff.rbacdemo.system.entity.SysLog;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * @author frankie fan
  */
+
 public interface SysLogService extends IService<SysLog> {
 	
 	List<SysLog> findAllLogs(SysLog log);

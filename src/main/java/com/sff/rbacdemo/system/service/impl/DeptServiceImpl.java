@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import java.util.List;
  * @author frankie fan
  */
 @Service("deptService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements DeptService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());

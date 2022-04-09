@@ -18,7 +18,6 @@ import java.util.List;
  * @author frankie fan
  */
 @Service("dictService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());

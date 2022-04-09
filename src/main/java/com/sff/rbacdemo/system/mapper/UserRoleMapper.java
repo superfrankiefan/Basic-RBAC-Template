@@ -6,16 +6,16 @@ import com.sff.rbacdemo.system.entity.UserRole;
 public interface UserRoleMapper extends BaseMapper<UserRole> {
 
     /**
-     * 根据用户ID批量删除记录
-     * @param userId
+     * 根据用户名批量删除记录
+     * @param userName
      * @return
      */
-    public int deleteByUserId(Long userId);
+    public int deleteByUserName(String userName);
 
     /**
-     * 根据角色ID批量删除记录
-     * @param roleId
+     * 根据角色编码批量删除记录
+     * @param roleCode
      * @return
      */
-    public int deleteByRoleId(Long roleId);
+    public int deleteByRoleCode(String roleCode);
 }

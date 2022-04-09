@@ -5,6 +5,7 @@ import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.system.dto.RoleAndMenus;
 import com.sff.rbacdemo.system.dto.RoleWithResource;
 import com.sff.rbacdemo.system.entity.Role;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

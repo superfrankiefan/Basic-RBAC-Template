@@ -16,7 +16,6 @@ import java.util.List;
  * @author frankie fan
  */
 @Service("userRoleService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> implements UserRoleService {
 
 	@Autowired
@@ -24,16 +23,16 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 
 	@Override
 	@Transactional
-	public void deleteUserRolesByRoleId(String roleIds) {
-		List<String> list = Arrays.asList(roleIds.split(","));
-		list.stream().forEach(s -> this.userRoleMapper.deleteByRoleId(Long.valueOf(s)));
+	public void deleteUserRolesByRoleCode(String roleCodes) {
+		List<String> list = Arrays.asList(roleCodes.split(","));
+		list.stream().forEach(s -> this.userRoleMapper.deleteByRoleCode(s));
 	}
 
 	@Override
 	@Transactional
-	public void deleteUserRolesByUserId(String userIds) {
-		List<String> list = Arrays.asList(userIds.split(","));
-		list.stream().forEach(s -> this.userRoleMapper.deleteByUserId(Long.valueOf(s)));
+	public void deleteUserRolesByUserName(String userNames) {
+		List<String> list = Arrays.asList(userNames.split(","));
+		list.stream().forEach(s -> this.userRoleMapper.deleteByUserName(s));
 	}
 
 }

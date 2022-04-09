@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.List;
 
 @Service("resourceService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true, rollbackFor = Exception.class)
 public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> implements ResourceService {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());

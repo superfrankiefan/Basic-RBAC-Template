@@ -1,45 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sff.rbacdemo.system.mapper.UserMapper">
-
-    <select id="findUserWithDept" resultType="com.sff.rbacdemo.system.entity.User"
-            parameterType="com.sff.rbacdemo.system.entity.User">
-        select u.user_id userId,u.username,u.email,u.mobile,u.status,u.crate_time crateTime,
-        u.gender,d.dept_name deptName from t_user u
-        left join t_dept d on(u.dept_id = d.dept_id)
-        where 1=1
-        <if test="username != null and username != ''">
-            AND u.username = #{username}
-        </if>
-        <if test="deptId != null and deptId != ''">
-            AND d.dept_id = #{deptId}
-        </if>
-        <if test="gender != null and gender != ''">
-            AND u.gender = #{gender}
-        </if>
-        <if test="status != null and status != ''">
-            AND u.status = #{status}
-        </if>
-        order by u.user_id
-    </select>
-
-    <select id="findUserWithRole" resultType="com.sff.rbacdemo.system.dto.UserWithRole">
-        select u.user_id userId,u.username,u.dept_id deptId,u.email,u.mobile,
-        u.status,u.ssex,ur.role_id roleId from t_user u
-        left join t_user_role ur on (u.user_id = ur.user_id)
-        where u.user_id = #{userId}
-    </select>
+    <delete id="deleteByUsername">
+        DELETE FROM t_user where USERNAME = #{userName}
+    </delete>
 
     <select id="getUserInfo" resultType="com.sff.rbacdemo.system.dto.UserInfoDTO" parameterType="java.lang.Long">
         select u.user_id userId, u.real_name realName, u.username userName, u.avatar,
-        ur.role_id roleId, r.role_code roleCode, r.role_name roleName, r.remark remark
+        ur.role_code roleCode, r.role_id roleId, r.role_name roleName, r.remark remark
 		from
 		t_user u
         left join
-		t_user_role ur on (u.user_id = ur.user_id)
+		t_user_role ur on (u.username = ur.username)
         left join
-		t_role r on (ur.role_id = r.role_id)
+		t_role r on (ur.role_code = r.role_code)
         where u.user_id = #{userId}
     </select>
+
+    <select id="findUserWithRoleAndDept" resultType="com.sff.rbacdemo.system.dto.UserInfoDTO"
+            parameterType="com.sff.rbacdemo.system.dto.UserQueryParam">
+        SELECT
+            res.USER_ID as userId,
+            res.USERNAME as userName,
+            res.REAL_NAME as realName,
+            res.PASSWORD as passsword,
+            res.WORK_NO as workNo,
+            res.EMAIL as email,
+            res.DEPT_CODE as deptCode,
+            res.DEPT_NAME as deptName,
+            GROUP_CONCAT(res.ROLE_CODE) as roleCodes
+        FROM
+            (
+                SELECT
+                    tu.USER_ID,
+                    tu.USERNAME,
+                    tu.REAL_NAME,
+                    tu.PASSWORD,
+                    tu.WORK_NO,
+                    tu.EMAIL,
+                    tr.ROLE_CODE,
+                    tr.ROLE_ID,
+                    td.DEPT_CODE,
+                    td.DEPT_NAME
+                FROM
+                    t_user tu
+                LEFT JOIN
+                    t_user_role tur
+                ON tu.USERNAME = tur.USERNAME
+                LEFT JOIN
+                    t_role tr
+                ON tur.ROLE_CODE = tr.ROLE_CODE
+                LEFT JOIN
+                    t_dept td
+                ON tu.DEPT_CODE = td.DEPT_CODE
+                WHERE 1=1
+                <if test="user.username != null and user.username != ''">
+                    AND tu.USERNAME LIKE CONCAT('%', #{user.username}, '%')
+                </if>
+                <if test="user.realName != null and user.realName != ''">
+                    AND tu.REAL_NAME LIKE CONCAT('%', #{user.realName}, '%')
+                </if>
+                <if test="user.deptCode != null and user.deptCode != ''">
+                    AND tu.DEPT_CODE = #{user.deptCode}
+                </if>
+            ) AS res
+        GROUP BY
+            res.USER_ID
+        ORDER BY
+            res.USERNAME
+    </select>
+
+    <!--    <select id="findUserWithDept" resultType="com.sff.rbacdemo.system.entity.User"-->
+    <!--            parameterType="com.sff.rbacdemo.system.entity.User">-->
+    <!--        select u.user_id userId,u.username,u.email,u.mobile,u.status,u.crate_time crateTime,-->
+    <!--        u.gender,d.dept_name deptName from t_user u-->
+    <!--        left join t_dept d on(u.dept_id = d.dept_id)-->
+    <!--        where 1=1-->
+    <!--        <if test="username != null and username != ''">-->
+    <!--            AND u.username = #{username}-->
+    <!--        </if>-->
+    <!--        <if test="deptId != null and deptId != ''">-->
+    <!--            AND d.dept_id = #{deptId}-->
+    <!--        </if>-->
+    <!--        <if test="gender != null and gender != ''">-->
+    <!--            AND u.gender = #{gender}-->
+    <!--        </if>-->
+    <!--        <if test="status != null and status != ''">-->
+    <!--            AND u.status = #{status}-->
+    <!--        </if>-->
+    <!--        order by u.user_id-->
+    <!--    </select>-->
+
+    <!--    <select id="findUserWithRole" resultType="com.sff.rbacdemo.system.dto.UserWithRole">-->
+    <!--        select u.user_id userId,u.username,u.dept_id deptId,u.email,u.mobile,-->
+    <!--        u.status,u.ssex,ur.role_id roleId from t_user u-->
+    <!--        left join t_user_role ur on (u.user_id = ur.user_id)-->
+    <!--        where u.user_id = #{userId}-->
+    <!--    </select>-->
 
 </mapper>

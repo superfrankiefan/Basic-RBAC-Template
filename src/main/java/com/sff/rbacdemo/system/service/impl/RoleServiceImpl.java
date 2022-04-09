@@ -23,7 +23,6 @@ import java.util.List;
 
 @Slf4j(topic = "RoleServiceImpl")
 @Service("roleService")
-@Transactional
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired
@@ -126,7 +125,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         List<String> list = Arrays.asList(roleIds.split(","));
         list.stream().forEach(s -> this.roleMapper.deleteById(Long.valueOf(s)));
         this.roleResourceService.deleteRoleResourcesByRoleIds(roleIds);
-        this.userRoleService.deleteUserRolesByRoleId(roleIds);
+        this.userRoleService.deleteUserRolesByRoleCode(roleIds);
     }
 
 }

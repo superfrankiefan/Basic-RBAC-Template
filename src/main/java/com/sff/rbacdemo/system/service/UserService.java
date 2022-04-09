@@ -3,36 +3,63 @@ package com.sff.rbacdemo.system.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.system.dto.UserInfoDTO;
-import com.sff.rbacdemo.system.dto.UserWithRole;
 import com.sff.rbacdemo.system.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService extends IService<User> {
 
+    /**
+     * 获取当前登陆用户信息
+     * @return
+     */
     UserInfoDTO getCurrentUserInfo();
 
+    /**
+     * 分页查询用户
+     * @param deptId
+     * @param username
+     * @param realName
+     * @param page
+     * @param count
+     * @return
+     */
     PageResponseDTO<User> getUserListByDept(String deptId, String username, String realName, int page, int count);
 
-    User findByName(String userName);
+    /**
+     * 分页查询用户信息
+     * @param page
+     * @param count
+     * @param deptCode
+     * @param username
+     * @param realName
+     * @return
+     */
+    PageResponseDTO<UserInfoDTO> queryUserList(int page, int count, String deptCode, String username, String realName);
+
+    /**
+     * 根据用户名查询用户信息
+     * @param userName
+     * @return
+     */
+    User findByUserName(String userName);
 
     /**
      * 添加用户
-     * @param user
-     * @param roles
+     * @param userInfoDTO
      */
-    void addUser(User user, Long[] roles);
+    void addUser(UserInfoDTO userInfoDTO);
 
     /**
      * 更新用户信息
-     * @param user
-     * @param roles
+     * @param userInfoDTO
      */
-    void updateUser(User user, Long[] roles);
+    void updateUser(UserInfoDTO userInfoDTO);
 
     /**
      * 删除用户
-     * @param userIds
+     * @param userNames
      */
-    void deleteUsers(String userIds);
+    void deleteUsers(String userNames);
 
     void updateLoginTime(String userName);
 

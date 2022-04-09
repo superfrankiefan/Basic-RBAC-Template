@@ -9,8 +9,6 @@ import com.sff.rbacdemo.system.service.ResourceService;
 import com.sff.rbacdemo.system.service.RoleService;
 import com.sff.rbacdemo.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -68,9 +66,9 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String userName = JWTUtil.getUsername(principals.toString());
-        User user = userService.findByName(userName);
+        User user = userService.findByUserName(userName);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRole(user.getRoleName());
+//        simpleAuthorizationInfo.addRole(user.getRoleName());
         // 获取用户角色集
         List<Role> roleList = this.roleService.findUserRole(userName);
         Set<String> roleSet = roleList.stream().map(Role::getRoleName).collect(Collectors.toSet());
@@ -95,7 +93,7 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException("token invalid");
         }
         // 通过用户名到数据库查询用户信息
-        User user = userService.findByName(username);
+        User user = userService.findByUserName(username);
         if (user == null) {
             throw new AuthenticationException("User didn't existed!");
         }

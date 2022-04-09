@@ -1,7 +1,6 @@
 package com.sff.rbacdemo.system.controller;
 
 import com.sff.rbacdemo.common.model.APIResponse;
-import com.sff.rbacdemo.common.model.TreeModel;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.system.entity.Dept;
 import com.sff.rbacdemo.system.service.DeptService;

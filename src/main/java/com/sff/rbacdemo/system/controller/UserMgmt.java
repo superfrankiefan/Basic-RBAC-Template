@@ -6,6 +6,7 @@ import com.sff.rbacdemo.common.model.APIResponse;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.common.utils.MD5Utils;
+import com.sff.rbacdemo.system.dto.UserInfoDTO;
 import com.sff.rbacdemo.system.entity.User;
 import com.sff.rbacdemo.system.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,54 +35,37 @@ public class UserMgmt extends BaseController {
     @GetMapping("getAccountList")
     @ResponseBody
     @RequiresAuthentication
-    public APIResponse getAccountListByDept(@RequestParam(required = false) String deptId,
+    public APIResponse getAccountListByDept(@RequestParam(required = false) String deptCode,
                                             @RequestParam(required = false) String username,
                                             @RequestParam(required = false) String realName,
                                             @RequestParam(required = false, defaultValue = "0") Integer page,
                                             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-        PageResponseDTO<User> accounts = this.userService.getUserListByDept(deptId, username, realName, page, pageSize);
+        PageResponseDTO<UserInfoDTO> accounts = this.userService.queryUserList(page, pageSize, deptCode, username, realName);
         return APIResponse.OK("accounts", accounts);
     }
 
-    @Log("新增用户")
+    @Log("添加或者更新用户信息")
+    @PostMapping("addOrUpdateAccount")
     @RequiresAuthentication
-    @RequestMapping("add")
     @ResponseBody
-    public APIResponse addUser(User user, Long[] roles) {
-        try {
-            if (ON.equalsIgnoreCase(user.getUserStatus()))
-                user.setUserStatus(GlobalConstant.STATUS_VALID);
-            else
-                user.setUserStatus(GlobalConstant.STATUS_LOCK);
-            this.userService.addUser(user, roles);
-            return APIResponse.OK("新增用户成功！", null);
-        } catch (Exception e) {
-            log.error("新增用户失败", e);
-            return APIResponse.ERROR(GlobalConstant.HTTP_500, "新增用户失败，请联系网站管理员！", e);
-        }
-    }
-
-    @Log("修改用户")
-    @RequiresAuthentication
-    @RequestMapping("update")
-    @ResponseBody
-    public APIResponse updateUser(User user, Long[] rolesSelect) {
-        try {
-            if (ON.equalsIgnoreCase(user.getUserStatus()))
-                user.setUserStatus(GlobalConstant.STATUS_VALID);
-            else
-                user.setUserStatus(GlobalConstant.STATUS_LOCK);
-            this.userService.updateUser(user, rolesSelect);
-            return APIResponse.OK("修改用户成功！", null);
-        } catch (Exception e) {
-            log.error("修改用户失败", e);
-            return APIResponse.ERROR(GlobalConstant.HTTP_500, "修改用户失败，请联系网站管理员！", e);
+    public APIResponse addOrUpdateUser(@RequestBody UserInfoDTO userInfo) {
+        if (userInfo != null && userInfo.getUserName() != null) {
+            User user = this.userService.findByUserName(userInfo.getUserName());
+            if ( user != null) {
+                this.userService.updateUser(userInfo);
+                return APIResponse.OK("更新用户成功！", null);
+            } else {
+                this.userService.addUser(userInfo);
+                return APIResponse.OK("新增用户成功！", null);
+            }
+        } else {
+            return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR, "用户数据非法", userInfo);
         }
     }
 
     @Log("删除用户")
     @RequiresAuthentication
-    @RequestMapping("deleteAccounts")
+    @DeleteMapping("deleteAccounts")
     @ResponseBody
     public APIResponse deleteUsers(@RequestBody Map<String, String> userIds) {
         try {
@@ -107,7 +91,7 @@ public class UserMgmt extends BaseController {
     @ResponseBody
     public APIResponse accountExist(@RequestBody Map<String, String> username) {
         String userName = username.get("username");
-        User user = this.userService.findByName(userName);
+        User user = this.userService.findByUserName(userName);
         if(user == null) {
             return APIResponse.OK("User Name is OK.", null);
         }
@@ -126,5 +110,23 @@ public class UserMgmt extends BaseController {
             return APIResponse.ERROR(GlobalConstant.HTTP_500, "更改密码失败，请联系网站管理员！", e);
         }
     }
+
+    //    @Log("修改用户")
+//    @RequiresAuthentication
+//    @RequestMapping("update")
+//    @ResponseBody
+//    public APIResponse updateUser(User user, Long[] rolesSelect) {
+//        try {
+//            if (ON.equalsIgnoreCase(user.getUserStatus()))
+//                user.setUserStatus(GlobalConstant.STATUS_VALID);
+//            else
+//                user.setUserStatus(GlobalConstant.STATUS_LOCK);
+//            this.userService.updateUser(user, rolesSelect);
+//            return APIResponse.OK("修改用户成功！", null);
+//        } catch (Exception e) {
+//            log.error("修改用户失败", e);
+//            return APIResponse.ERROR(GlobalConstant.HTTP_500, "修改用户失败，请联系网站管理员！", e);
+//        }
+//    }
 
 }

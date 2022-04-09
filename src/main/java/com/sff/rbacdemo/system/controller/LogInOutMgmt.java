@@ -43,7 +43,7 @@ public class LogInOutMgmt extends BaseController {
         String password = loginForm.getPassword();
         // 密码 MD5 加密
         password = MD5Utils.encrypt(username.toLowerCase(), password);
-        User user = this.userService.findByName(username);
+        User user = this.userService.findByUserName(username);
         if (user != null) {
             if (password.equals(user.getPassword())) {
                 try {
