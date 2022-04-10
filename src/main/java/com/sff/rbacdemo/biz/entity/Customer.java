@@ -22,6 +22,9 @@ public class Customer extends BaseEntity {
     @TableId(value = "CUSTOMER_ID", type = IdType.ASSIGN_ID)
     private Long customerId;
 
+    @TableField("CUSTOMER_CODE")
+    private String customerCode;
+
     @TableField("CUSTOMER_NAME")
     private String customerName;
 

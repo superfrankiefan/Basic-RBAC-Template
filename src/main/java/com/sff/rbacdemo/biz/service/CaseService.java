@@ -9,4 +9,5 @@ import com.sff.rbacdemo.biz.entity.Case;
  */
 
 public interface CaseService extends IService<Case> {
+
 }

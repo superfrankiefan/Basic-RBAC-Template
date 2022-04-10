@@ -1,5 +1,6 @@
 package com.sff.rbacdemo.system.controller;
 
+import com.sff.rbacdemo.common.controller.BaseController;
 import com.sff.rbacdemo.common.model.APIResponse;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.system.entity.Dept;
@@ -20,7 +21,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/system/dept")
-public class DeptMgmt {
+public class DeptMgmt extends BaseController {
 
     @Autowired
     private DeptService deptService;
