@@ -49,7 +49,15 @@ public interface UserService extends IService<User> {
      */
     void deleteUsers(String userNames);
 
+    /**
+     * 同步用户登陆时间
+     * @param userName
+     */
     void updateLoginTime(String userName);
 
+    /**
+     * 修改密码
+     * @param password
+     */
     void updatePassword(String password);
 }
