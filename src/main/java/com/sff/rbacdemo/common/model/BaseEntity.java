@@ -26,7 +26,7 @@ public class BaseEntity implements Serializable {
     /** 创建人 */
     @JsonSerialize(using = ToStringSerializer.class)
     @TableField(value = "CREATE_BY", fill = FieldFill.INSERT)
-    private Long createBy;
+    private String createBy;
     /** 创建时间 */
     @TableField(value = "CREATE_TIME", fill = FieldFill.INSERT)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -35,7 +35,7 @@ public class BaseEntity implements Serializable {
     /** 更新人 */
     @JsonSerialize(using = ToStringSerializer.class)
     @TableField(value = "UPDATE_BY", fill = FieldFill.INSERT_UPDATE)
-    private Long updateBy;
+    private String updateBy;
     /** 更新时间 */
     @TableField(value = "UPDATE_TIME", fill = FieldFill.INSERT_UPDATE)
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")

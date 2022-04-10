@@ -1,6 +1,7 @@
 package com.sff.rbacdemo.common.config.mybatisplus;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.system.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -25,11 +26,11 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
         this.strictInsertFill(metaObject, "updateTime", Date.class, new Date());
         User currentUser = (User) SecurityUtils.getSubject().getPrincipal();
         if(currentUser != null) {
-            this.strictInsertFill(metaObject, "createBy", Long.class, currentUser.getUserId());
-            this.strictInsertFill(metaObject, "updateBy", Long.class, currentUser.getUserId());
+            this.strictInsertFill(metaObject, "createBy", String.class, currentUser.getUsername());
+            this.strictInsertFill(metaObject, "updateBy", String.class, currentUser.getUsername());
         }else{
-            this.strictInsertFill(metaObject, "createBy", Long.class, Long.valueOf(10000000));
-            this.strictInsertFill(metaObject, "updateBy", Long.class, Long.valueOf(10000000));
+            this.strictInsertFill(metaObject, "createBy", String.class, GlobalConstant.ROOT_ID);
+            this.strictInsertFill(metaObject, "updateBy", String.class, GlobalConstant.ROOT_ID);
         }
     }
 
@@ -39,9 +40,9 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
         this.strictUpdateFill(metaObject, "updateTime", Date.class, new Date());
         User currentUser = (User) SecurityUtils.getSubject().getPrincipal();
         if(currentUser != null) {
-            this.strictUpdateFill(metaObject, "updateBy", Long.class, currentUser.getUserId());
+            this.strictUpdateFill(metaObject, "updateBy", String.class, currentUser.getUsername());
         }else{
-            this.strictUpdateFill(metaObject, "updateBy", Long.class, Long.valueOf(10000000));
+            this.strictUpdateFill(metaObject, "updateBy", String.class, GlobalConstant.ROOT_ID);
         }
     }
 }
