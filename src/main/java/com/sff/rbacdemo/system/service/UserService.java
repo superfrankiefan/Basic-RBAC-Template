@@ -15,17 +15,6 @@ public interface UserService extends IService<User> {
     UserInfoDTO getCurrentUserInfo();
 
     /**
-     * 分页查询用户
-     * @param deptId
-     * @param username
-     * @param realName
-     * @param page
-     * @param count
-     * @return
-     */
-    PageResponseDTO<User> getUserListByDept(String deptId, String username, String realName, int page, int count);
-
-    /**
      * 分页查询用户信息
      * @param page
      * @param count

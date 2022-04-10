@@ -140,28 +140,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper,User> implements Use
     }
 
     @Override
-    public PageResponseDTO<User> getUserListByDept(String deptId, String username, String realName, int page, int count) {
-        Page<User> pager = new Page<>(page, count);
-        QueryWrapper queryWrapper = new QueryWrapper();
-        if (deptId != null && !deptId.isEmpty()){
-            queryWrapper.eq("deptId", deptId);
-        }
-        if (username != null && !username.isEmpty()){
-            queryWrapper.like("USERNAME", username);
-        }
-        if (realName != null && !realName.isEmpty()){
-            queryWrapper.like("REAL_NAME", realName);
-        }
-        IPage<User> paging = this.userMapper.selectPage(pager, queryWrapper);
-        PageResponseDTO pageResponseDTO = new PageResponseDTO();
-        pageResponseDTO.setPage(paging.getCurrent());
-        pageResponseDTO.setCount(paging.getSize());
-        pageResponseDTO.setTotal(paging.getTotal());
-        pageResponseDTO.setItems(paging.getRecords());
-        return pageResponseDTO;
-    }
-
-    @Override
     public PageResponseDTO<UserInfoDTO> queryUserList(int page, int count, String deptCode, String username, String realName) {
         UserQueryParam userQueryParam = new UserQueryParam();
         userQueryParam.setRealName(realName);
