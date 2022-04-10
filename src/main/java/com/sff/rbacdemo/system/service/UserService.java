@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.system.dto.UserInfoDTO;
 import com.sff.rbacdemo.system.entity.User;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface UserService extends IService<User> {
 

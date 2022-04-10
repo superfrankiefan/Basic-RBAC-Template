@@ -11,8 +11,8 @@ public class RoleResource extends BaseEntity {
 	
 	private static final long serialVersionUID = -7573904024872252113L;
 
-	@TableField("ROLE_ID")
-    private Long roleId;
+	@TableField("ROLE_CODE")
+    private String roleCode;
 
     @TableField("RESOURCE_ID")
     private Long resourceId;

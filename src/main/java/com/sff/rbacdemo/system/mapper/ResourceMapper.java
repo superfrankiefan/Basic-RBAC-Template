@@ -9,7 +9,7 @@ public interface ResourceMapper extends BaseMapper<Resource> {
 	
 	List<Resource> findUserPermissions(String userName);
 	
-//	List<Resource> findUserResources(String userName);
+	List<Resource> findUserResources(String userName);
 
 //	List<Resource> findAll();
 

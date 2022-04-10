@@ -8,17 +8,17 @@ public interface RoleResourceMapper extends BaseMapper<RoleResource> {
 
     /**
      * 获取角色对应的资源ID
-     * @param roleId
+     * @param roleCode
      * @return
      */
-    public String[] getResourceIds(Long roleId);
+    public String[] getResourceIds(String roleCode);
 
     /**
      * 根据角色ID删除角色资源
-     * @param roleId
+     * @param roleCode
      * @return
      */
-    public int deleteByRoleId(Long roleId);
+    public int deleteByRoleCode(String roleCode);
 
     /**
      * 根据资源ID删除角色资源

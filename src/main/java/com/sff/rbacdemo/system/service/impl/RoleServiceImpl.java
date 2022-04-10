@@ -70,8 +70,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public String[] getRoleMenus(String roleId) {
-        return this.roleResourceMapper.getResourceIds(Long.valueOf(roleId));
+    public String[] getRoleMenus(String roleCode) {
+        return this.roleResourceMapper.getResourceIds(roleCode);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public void updateRole(RoleAndMenus roleAndMenus) {
         Role role = (Role) roleAndMenus;
         this.roleMapper.updateById(role);
-        this.roleResourceMapper.deleteByRoleId(role.getRoleId());
+        this.roleResourceMapper.deleteByRoleCode(role.getRoleCode());
         setRoleResources(role, roleAndMenus.getMenuIds().split(","));
     }
 
@@ -114,7 +114,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         Arrays.stream(resourceIds).forEach(resourceId -> {
             RoleResource rm = new RoleResource();
             rm.setResourceId(Long.valueOf(resourceId));
-            rm.setRoleId(role.getRoleId());
+            rm.setRoleCode(role.getRoleCode());
             this.roleResourceMapper.insert(rm);
         });
     }
@@ -124,7 +124,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public void deleteRoles(String roleIds) {
         List<String> list = Arrays.asList(roleIds.split(","));
         list.stream().forEach(s -> this.roleMapper.deleteById(Long.valueOf(s)));
-        this.roleResourceService.deleteRoleResourcesByRoleIds(roleIds);
+        this.roleResourceService.deleteRoleResourcesByRoleCodes(roleIds);
         this.userRoleService.deleteUserRolesByRoleCode(roleIds);
     }
 

@@ -2,8 +2,8 @@ package com.sff.rbacdemo.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sff.rbacdemo.common.model.TreeModel;
+import com.sff.rbacdemo.system.dto.RouteDTO;
 import com.sff.rbacdemo.system.entity.Resource;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface ResourceService extends IService<Resource> {
      * @param resourceId
      * @return
      */
-    Resource findById(Long resourceId);
+    Resource findByResourceId(Long resourceId);
 
     /**
      * 新增资源
@@ -42,7 +42,19 @@ public interface ResourceService extends IService<Resource> {
      */
     void deleteMenus(String resourceIds);
 
+    /**
+     * 获取用户的权限
+     * @param userName
+     * @return
+     */
     List<Resource> findUserPermissions(String userName);
+
+    /**
+     * 获取用户前端路由
+     * @param userName
+     * @return
+     */
+    List<RouteDTO> getUserRoutes(String userName);
     //    List<Resource> findUserResources(String userName);
     //    List<Resource> findAllResources(Resource resource);
     //    TreeModel<Resource> getUserResource(String userName);

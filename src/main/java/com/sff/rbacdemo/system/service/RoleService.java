@@ -38,10 +38,10 @@ public interface RoleService extends IService<Role> {
 	/**
 	 * 获取角色菜单
 	 *
-	 * @param roleId
+	 * @param roleCode
 	 * @return
 	 */
-	String[] getRoleMenus(String roleId);
+	String[] getRoleMenus(String roleCode);
 
 	/**
 	 * 设置角色状态

@@ -85,7 +85,7 @@ public class RoleMgmt extends BaseController {
     @GetMapping("getRoleMenus")
     @ResponseBody
     @RequiresAuthentication
-    public APIResponse getRoleMenus(@RequestParam(required = true) String roleId) {
-        return APIResponse.OK("Get Role Menus", this.roleService.getRoleMenus(roleId));
+    public APIResponse getRoleMenus(@RequestParam(required = true) String roleCode) {
+        return APIResponse.OK("Get Role Menus", this.roleService.getRoleMenus(roleCode));
     }
 }

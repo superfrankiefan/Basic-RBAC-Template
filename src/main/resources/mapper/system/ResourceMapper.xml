@@ -21,15 +21,21 @@
             where u.username = #{userName} and m.perms is not null and m.perms &lt;&gt; ''
     </select>
 
-<!--    <select id="findUserResources" resultMap="resource">-->
-<!--        select m.* from t_menu m-->
-<!--        where m.TYPE &lt;&gt; 1 and m.MENU_ID in-->
-<!--            (select distinct rm.menu_id from t_role_menu rm-->
-<!--            left join t_role r on(rm.role_id = r.role_id)-->
-<!--            left join t_user_role ur on(ur.role_id = r.role_id)-->
-<!--            left join t_user u on (u.user_id = ur.user_id)-->
-<!--            where u.username = #{userName}) order by m.create_time-->
-<!--    </select>-->
+    <select id="findUserResources" resultType="com.sff.rbacdemo.system.entity.Resource">
+        SELECT
+            tr.*
+        FROM
+            t_user tu
+        LEFT JOIN t_user_role tur ON
+            tu.USERNAME = tur.USERNAME
+        LEFT JOIN t_role_resource trr ON
+            tur.ROLE_CODE = trr.ROLE_CODE
+        LEFT JOIN t_resource tr ON
+            trr.RESOURCE_ID = tr.RESOURCE_ID
+        WHERE
+            tu.USERNAME = #{userName}
+            AND tr.STATUS = '1'
+    </select>
 
 <!--    <select id="findAll" resultType="com.sff.rbacdemo.system.entity.Resource">-->
 <!--        select * from t_resource order by resource_id-->

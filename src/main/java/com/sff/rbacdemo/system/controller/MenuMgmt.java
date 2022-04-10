@@ -2,7 +2,6 @@ package com.sff.rbacdemo.system.controller;
 
 import com.sff.rbacdemo.common.model.APIResponse;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
-import com.sff.rbacdemo.system.entity.Dept;
 import com.sff.rbacdemo.system.entity.Resource;
 import com.sff.rbacdemo.system.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +38,7 @@ public class MenuMgmt {
     public APIResponse addOrUpdateMenu(@RequestBody Resource resource){
         if(resource != null) {
             if (resource.getResourceId() != null) {
-                Resource resourceIns = resourceService.findById(resource.getResourceId());
+                Resource resourceIns = resourceService.findByResourceId(resource.getResourceId());
                 if (resourceIns != null) {
                     this.resourceService.updateResource(resource);
                     return APIResponse.OK("Update Resource", null);

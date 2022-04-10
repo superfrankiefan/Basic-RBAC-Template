@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sff.rbacdemo.common.model.TreeModel;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
 import com.sff.rbacdemo.common.utils.TreeUtils;
+import com.sff.rbacdemo.system.dto.Meta;
+import com.sff.rbacdemo.system.dto.RouteDTO;
 import com.sff.rbacdemo.system.entity.Resource;
 import com.sff.rbacdemo.system.mapper.ResourceMapper;
 import com.sff.rbacdemo.system.service.ResourceService;
@@ -13,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -35,6 +36,62 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
 
     @Autowired
     private WebApplicationContext applicationContext;
+
+    @Override
+    public List<RouteDTO> getUserRoutes(String userName) {
+        List<Resource> resources = this.resourceMapper.findUserResources(userName);
+        List<RouteDTO> trees = new ArrayList<>();
+        buildRouteTrees(trees, resources);
+        return buildList(trees, GlobalConstant.ROOT_ID);
+    }
+
+    private void buildRouteTrees(List<RouteDTO> trees, List<Resource> resources) {
+        resources.forEach(resource -> {
+            RouteDTO routeDTO = new RouteDTO();
+            routeDTO.setId(resource.getResourceId());
+            routeDTO.setParentId(resource.getParentId());
+            routeDTO.setName(resource.getResourceName());
+            routeDTO.setAlias(resource.getPath());
+            routeDTO.setRedirect(resource.getRedirect());
+            routeDTO.setPath(resource.getPath());
+            routeDTO.setCaseSensitive(false);
+            routeDTO.setComponent(resource.getComponent());
+            Meta meta = new Meta();
+            meta.setIcon(resource.getIcon());
+            meta.setTitle(resource.getResourceName());
+            meta.setOrderNo(resource.getOrderNo());
+            meta.setHideMenu(resource.isShow());
+            meta.setCurrentActiveMenu(resource.getCurrentActiveMenu());
+            meta.setRealPath(resource.getRealPath());
+            meta.setIgnoreKeepAlive(resource.isKeepalive());
+            routeDTO.setMeta(meta);
+            trees.add(routeDTO);
+        });
+    }
+
+    public static List<RouteDTO> buildList(List<RouteDTO> nodes, String idParam) {
+        if (nodes == null) {
+            return new ArrayList<>();
+        }
+        List<RouteDTO> topNodes = new ArrayList<>();
+        nodes.forEach(child -> {
+            String pid = child.getParentId().toString();
+            if (pid == null || idParam.equals(pid)) {
+                topNodes.add(child);
+                return;
+            }
+            nodes.forEach(parent -> {
+                String id = parent.getId().toString();
+                if (id != null && id.equals(pid)) {
+                    if (parent.getChildren() == null){
+                        parent.setChildren(new ArrayList<>());
+                    }
+                    parent.getChildren().add(child);
+                }
+            });
+        });
+        return topNodes;
+    }
 
     @Override
     public List<TreeModel<Resource>> getResourceTree(String manuName, int status) {
@@ -96,7 +153,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public Resource findById(Long resourceId) {
+    public Resource findByResourceId(Long resourceId) {
         return this.resourceMapper.selectById(resourceId);
     }
 

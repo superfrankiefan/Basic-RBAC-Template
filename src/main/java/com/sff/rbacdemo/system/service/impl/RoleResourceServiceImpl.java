@@ -17,9 +17,9 @@ public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, Rol
 	private RoleResourceMapper roleResourceMapper;
 
 	@Override
-	public void deleteRoleResourcesByRoleIds(String roleIds) {
-		List<String> list = Arrays.asList(roleIds.split(","));
-		list.stream().forEach(s -> this.roleResourceMapper.deleteByRoleId(Long.valueOf(s)));
+	public void deleteRoleResourcesByRoleCodes(String roleCodes) {
+		List<String> list = Arrays.asList(roleCodes.split(","));
+		list.stream().forEach(s -> this.roleResourceMapper.deleteByRoleCode(s));
 	}
 
 	@Override
