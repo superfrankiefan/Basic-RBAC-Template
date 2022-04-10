@@ -60,7 +60,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
             meta.setIcon(resource.getIcon());
             meta.setTitle(resource.getResourceName());
             meta.setOrderNo(resource.getOrderNo());
-            meta.setHideMenu(resource.isShow());
+            meta.setHideMenu(!resource.isShow());
             meta.setCurrentActiveMenu(resource.getCurrentActiveMenu());
             meta.setRealPath(resource.getRealPath());
             meta.setIgnoreKeepAlive(resource.isKeepalive());
