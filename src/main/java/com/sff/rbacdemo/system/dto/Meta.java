@@ -22,9 +22,9 @@ public class Meta implements Serializable {
 
     private String realPath;
 
-    private boolean ignoreKeepAlive;
+    private Boolean ignoreKeepAlive;
 
-    private boolean affix;
+    private Boolean affix;
 
     private String icon;
 
@@ -32,22 +32,22 @@ public class Meta implements Serializable {
 
     private String transitionName;
 
-    private boolean hideBreadcrumb;
+    private Boolean hideBreadcrumb;
 
-    private boolean hideChildrenInMenu;
+    private Boolean hideChildrenInMenu;
 
-    private boolean carryParam;
+    private Boolean carryParam;
 
-    private boolean single;
+    private Boolean single;
 
     private String currentActiveMenu;
 
-    private boolean hideTab;
+    private Boolean hideTab;
 
-    private boolean hideMenu;
+    private Boolean hideMenu;
 
-    private boolean isLink;
+    private Boolean isLink;
 
-    private boolean hidePathForChildren;
+    private Boolean hidePathForChildren;
 
 }

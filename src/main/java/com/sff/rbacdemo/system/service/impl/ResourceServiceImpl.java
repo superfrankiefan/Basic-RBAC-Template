@@ -60,10 +60,10 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
             meta.setIcon(resource.getIcon());
             meta.setTitle(resource.getResourceName());
             meta.setOrderNo(resource.getOrderNo());
-            meta.setHideMenu(!resource.isShow());
+            meta.setHideMenu(!resource.getShowInMenu());
             meta.setCurrentActiveMenu(resource.getCurrentActiveMenu());
             meta.setRealPath(resource.getRealPath());
-            meta.setIgnoreKeepAlive(resource.isKeepalive());
+            meta.setIgnoreKeepAlive(!resource.getKeepalive());
             routeDTO.setMeta(meta);
             trees.add(routeDTO);
         });
@@ -121,11 +121,11 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
             tree.setText(resource.getResourceName());
             tree.setType(resource.getType());
             tree.setCurrentActiveMenu(resource.getCurrentActiveMenu());
-            tree.setShow(resource.isShow());
+            tree.setShow(resource.getShowInMenu());
             tree.setRedirect(resource.getRedirect());
             tree.setRealPath(resource.getRealPath());
-            tree.setExt(resource.isExt());
-            tree.setKeepalive(resource.isKeepalive());
+            tree.setExt(resource.getExternalLink());
+            tree.setKeepalive(resource.getKeepalive());
             trees.add(tree);
         });
     }

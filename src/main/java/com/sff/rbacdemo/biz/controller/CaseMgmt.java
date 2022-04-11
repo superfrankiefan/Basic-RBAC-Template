@@ -65,7 +65,7 @@ public class CaseMgmt extends BaseController {
     @DeleteMapping("deleteCases")
     @ResponseBody
     @RequiresAuthentication
-    public APIResponse deleteCustomers(@RequestBody Map<String, String> caseIds) {
+    public APIResponse deleteCases(@RequestBody Map<String, String> caseIds) {
         this.caseMapper.deleteById(caseIds.get("caseIds"));
         return APIResponse.OK("Delete Cases", null);
     }

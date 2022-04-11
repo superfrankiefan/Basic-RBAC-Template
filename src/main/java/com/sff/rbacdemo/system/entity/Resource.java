@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.sff.rbacdemo.common.model.BaseEntity;
@@ -55,13 +56,13 @@ public class Resource extends BaseEntity {
 	@TableField("STATUS")
 	private String status;
 
-	@TableField("IS_EXT")
-	private boolean isExt;
+	@TableField("EXTERNAL_LINK")
+	private Boolean externalLink;
 
 	@TableField("KEEP_ALIVE")
-	private boolean keepalive;
+	private Boolean keepalive;
 
-	@TableField("IS_SHOW")
-	private boolean isShow;
+	@TableField("SHOW_IN_MENU")
+	private Boolean showInMenu;
 
 }
