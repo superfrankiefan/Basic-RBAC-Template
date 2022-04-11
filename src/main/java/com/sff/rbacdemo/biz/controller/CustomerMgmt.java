@@ -33,7 +33,7 @@ public class CustomerMgmt extends BaseController {
     public APIResponse addOrUpdateCustomer(@RequestBody Customer customer){
         if(customer != null & customer.getCustomerCode() != null) {
             QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("customerCode", customer.getCustomerCode());
+            queryWrapper.eq("CUSTOMER_CODE", customer.getCustomerCode());
             List custIns = this.customerMapper.selectList(queryWrapper);
             if(custIns.isEmpty()) {
                 this.customerMapper.insert(customer);
@@ -50,11 +50,15 @@ public class CustomerMgmt extends BaseController {
     @GetMapping("getCustomerList")
     @ResponseBody
     @RequiresAuthentication
-    public APIResponse getDeptList(@RequestParam(required = false, value = "customerCode") String customerCode,
+    public APIResponse getCustomerList(@RequestParam(required = false, value = "customerCode") String customerCode,
                                    @RequestParam(required = false, value = "customerName") String customerName) {
         QueryWrapper queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("customerCode", customerCode);
-        queryWrapper.like("customerName", customerName);
+        if (customerCode != null) {
+            queryWrapper.eq("CUSTOMER_CODE", customerCode);
+        }
+        if (customerName != null) {
+            queryWrapper.like("CUSTOMER_NAME", customerName);
+        }
         return APIResponse.OK("customers", this.customerMapper.selectList(queryWrapper));
     }
 

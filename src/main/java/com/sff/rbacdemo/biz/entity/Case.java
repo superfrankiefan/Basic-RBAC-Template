@@ -25,8 +25,8 @@ public class Case extends BaseEntity {
     @TableField("CASE_CODE")
     private String caseCode;
 
-    @TableField("EXTERAL_CODE")
-    private String exteralCode;
+    @TableField("EXTERNAL_CODE")
+    private String externalCode;
 
     @TableField("DESCRIPTION")
     private String description;

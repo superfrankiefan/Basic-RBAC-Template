@@ -33,7 +33,7 @@ public class CaseMgmt extends BaseController {
     public APIResponse addOrUpdateCase(@RequestBody Case caseForm){
         if(caseForm != null & caseForm.getCaseCode() != null) {
             QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("caseCode", caseForm.getCaseCode());
+            queryWrapper.eq("CASE_CODE", caseForm.getCaseCode());
             List custIns = this.caseMapper.selectList(queryWrapper);
             if(custIns.isEmpty()) {
                 this.caseMapper.insert(caseForm);
@@ -50,11 +50,15 @@ public class CaseMgmt extends BaseController {
     @GetMapping("getCaseList")
     @ResponseBody
     @RequiresAuthentication
-    public APIResponse getDeptList(@RequestParam(required = false, value = "caseCode") String caseCode,
+    public APIResponse getCaseList(@RequestParam(required = false, value = "caseCode") String caseCode,
                                    @RequestParam(required = false, value = "externalCode") String externalCode) {
         QueryWrapper queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("caseCode", caseCode);
-        queryWrapper.like("externalCode", externalCode);
+        if (caseCode != null) {
+            queryWrapper.like("CASE_CODE", caseCode);
+        }
+        if (externalCode != null) {
+            queryWrapper.like("EXTERNAL_CODE", externalCode);
+        }
         return APIResponse.OK("customers", this.caseMapper.selectList(queryWrapper));
     }
 
