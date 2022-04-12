@@ -16,4 +16,7 @@ public class RoleResource extends BaseEntity {
 
     @TableField("RESOURCE_ID")
     private Long resourceId;
+
+    @TableField("HALF_CHECKED")
+    private Boolean halfChecked = false;
 }

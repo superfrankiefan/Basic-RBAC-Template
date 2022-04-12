@@ -8,6 +8,7 @@ import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.system.dto.RoleAndMenus;
 import com.sff.rbacdemo.system.entity.Role;
 import com.sff.rbacdemo.system.entity.RoleResource;
+import com.sff.rbacdemo.system.mapper.ResourceMapper;
 import com.sff.rbacdemo.system.mapper.RoleMapper;
 import com.sff.rbacdemo.system.mapper.RoleResourceMapper;
 import com.sff.rbacdemo.system.service.RoleResourceServie;
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j(topic = "RoleServiceImpl")
 @Service("roleService")
@@ -30,6 +33,9 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Autowired
     private RoleResourceMapper roleResourceMapper;
+
+    @Autowired
+    private ResourceMapper resourceMapper;
 
     @Autowired
     private UserRoleService userRoleService;
@@ -111,10 +117,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     private void setRoleResources(Role role, String[] resourceIds) {
-        Arrays.stream(resourceIds).forEach(resourceId -> {
+        Set<Long> resources = new HashSet<>();
+        Set<Long> withAncestorIds = new HashSet<>();
+        Arrays.stream(resourceIds).forEach(id -> {
+            resources.add(Long.valueOf(id));
+            withAncestorIds.addAll(this.resourceMapper.getAncestors(Long.valueOf(id)));
+        });
+        withAncestorIds.stream().forEach(resourceId -> {
             RoleResource rm = new RoleResource();
-            rm.setResourceId(Long.valueOf(resourceId));
+            rm.setResourceId(resourceId);
             rm.setRoleCode(role.getRoleCode());
+            if(!resources.contains(resourceId))
+                rm.setHalfChecked(true);
             this.roleResourceMapper.insert(rm);
         });
     }

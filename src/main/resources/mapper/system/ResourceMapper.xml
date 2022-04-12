@@ -35,9 +35,41 @@
         WHERE
             tu.USERNAME = #{userName}
             AND tr.STATUS = '1'
+        ORDER BY
+            tr.ORDER_NO
     </select>
 
-<!--    <select id="findAll" resultType="com.sff.rbacdemo.system.entity.Resource">-->
+    <select id="getAncestors" resultType="java.lang.Long">
+        SELECT
+            tr2.RESOURCE_ID
+        FROM
+        (
+            SELECT
+                @r AS _id,
+                (
+                SELECT
+                    @r := parent_id
+                FROM
+                    t_resource tr
+                WHERE
+                    tr.RESOURCE_ID = _id
+                ) AS parent_id,
+                @l := @l + 1 AS lvl
+            FROM
+                (
+                SELECT
+                    @r := #{resourceId},
+                    @l := 0) vars, t_resource AS h
+                WHERE
+                @r &lt;&gt; 100000
+        ) t1
+        JOIN
+            t_resource tr2
+        ON
+            t1._id = tr2.RESOURCE_ID
+    </select>
+
+    <!--    <select id="findAll" resultType="com.sff.rbacdemo.system.entity.Resource">-->
 <!--        select * from t_resource order by resource_id-->
 <!--    </select>-->
 

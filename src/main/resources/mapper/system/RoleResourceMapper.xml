@@ -8,6 +8,6 @@
         delete from t_role_resource where RESOURCE_ID = #{resourceId}
     </delete>
     <select id="getResourceIds" parameterType="java.lang.String" resultType="java.lang.String">
-        select RESOURCE_ID from t_role_resource where ROLE_CODE = #{roleCode}
+        select RESOURCE_ID from t_role_resource where ROLE_CODE = #{roleCode} and HALF_CHECKED = FALSE
     </select>
 </mapper>
