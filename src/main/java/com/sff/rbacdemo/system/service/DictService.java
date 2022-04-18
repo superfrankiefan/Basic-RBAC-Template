@@ -2,15 +2,15 @@ package com.sff.rbacdemo.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sff.rbacdemo.system.entity.Dict;
-import org.springframework.transaction.annotation.Transactional;
+import com.sff.rbacdemo.system.entity.DictDetail;
+
+/**
+ * @author Frankie Fan
+ * @date 2022-04-14 10:30
+ */
 
 public interface DictService extends IService<Dict> {
 
-    Dict findById(Long dictId);
+    public DictDetail getDictDetailByCodeAndValue(String dictCode, String value);
 
-    void addDict(Dict dict);
-
-    void deleteDicts(String dictIds);
-
-    void updateDict(Dict dicdt);
 }

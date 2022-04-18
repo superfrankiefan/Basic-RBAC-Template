@@ -59,4 +59,7 @@ public class Billing extends BaseEntity {
 
     @TableField("CASE_CODE")
     private String caseCode;
+
+    @TableField("CUSTOMER_CODE")
+    private String customerCode;
 }
