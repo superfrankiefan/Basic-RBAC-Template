@@ -51,13 +51,17 @@ public class CustomerMgmt extends BaseController {
     @ResponseBody
     @RequiresAuthentication
     public APIResponse getCustomerList(@RequestParam(required = false, value = "customerCode") String customerCode,
-                                   @RequestParam(required = false, value = "customerName") String customerName) {
+                                       @RequestParam(required = false, value = "customerName") String customerName,
+                                       @RequestParam(required = false, value = "country") String country) {
         QueryWrapper queryWrapper = new QueryWrapper<>();
         if (customerCode != null) {
             queryWrapper.eq("CUSTOMER_CODE", customerCode);
         }
         if (customerName != null) {
             queryWrapper.like("CUSTOMER_NAME", customerName);
+        }
+        if (country != null) {
+            queryWrapper.like("COUNTRY", country);
         }
         return APIResponse.OK("customers", this.customerMapper.selectList(queryWrapper));
     }

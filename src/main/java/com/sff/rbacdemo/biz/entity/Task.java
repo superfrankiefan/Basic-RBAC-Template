@@ -24,8 +24,8 @@ public class Task extends BaseEntity {
     @TableField("TYPE")
     private String type;
 
-    @TableField("WORKING_HOUR")
-    private int workingHour;
+    @TableField("WORK_HOURS")
+    private float workHours;
 
     @TableField("DESCRIPTION")
     private String description;

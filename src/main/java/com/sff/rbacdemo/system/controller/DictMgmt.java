@@ -37,16 +37,19 @@ public class DictMgmt extends BaseController {
     @ResponseBody
     @RequiresAuthentication
     public APIResponse addOrUpdateDict(@RequestBody Dict dict){
-        if(dict != null & dict.getDictCode() != null) {
-            QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("DICT_CODE", dict.getDictCode());
-            List dicts = this.dictMapper.selectList(queryWrapper);
-            if(dicts.isEmpty()) {
+        if(dict != null) {
+            if(dict.getDictId() == null) {
                 this.dictMapper.insert(dict);
                 return APIResponse.OK("Add Dict", null);
-            }else{
-                this.dictMapper.update(dict, queryWrapper);
-                return APIResponse.OK("Update Dict", null);
+            }else {
+                Dict dictIns = this.dictMapper.selectById(dict.getDictId());
+                if (dictIns == null) {
+                    this.dictMapper.insert(dict);
+                    return APIResponse.OK("Add Dict", null);
+                } else {
+                    this.dictMapper.updateById(dict);
+                    return APIResponse.OK("Update Dict", null);
+                }
             }
         } else {
             return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"字典数据非法",dict);
