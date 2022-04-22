@@ -14,7 +14,6 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,20 +33,18 @@ public class CustomerMgmt extends BaseController {
     @ResponseBody
     @RequiresAuthentication
     public APIResponse addOrUpdateCustomer(@RequestBody Customer customer){
-        if(customer != null & customer.getCustomerCode() != null) {
-            QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("CUSTOMER_CODE", customer.getCustomerCode());
-            List custIns = this.customerMapper.selectList(queryWrapper);
-            if(custIns.isEmpty()) {
-                this.customerMapper.insert(customer);
-                return APIResponse.OK("Add Customer", null);
-            }else{
-                this.customerMapper.updateById(customer);
-                return APIResponse.OK("Update Customer", null);
+        if(customer != null) {
+            if(customer.getCustomerId() != null){
+                Customer custIns = this.customerMapper.selectById(customer.getCustomerId());
+                if(custIns != null) {
+                    this.customerMapper.updateById(customer);
+                    return APIResponse.OK("Update Customer", null);
+                }
             }
-        } else {
-            return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"客户数据非法",customer);
+            createCustomerInstance(customer);
+            return APIResponse.OK("Add Customer", null);
         }
+        return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"Customer Data Invalid",customer);
     }
 
     @GetMapping("getCustomerList")
@@ -103,6 +100,20 @@ public class CustomerMgmt extends BaseController {
     public APIResponse deleteCustomers(@RequestBody Map<String, String> customerIds) {
         this.customerMapper.deleteById(customerIds.get("customerIds"));
         return APIResponse.OK("Delete Customers", null);
+    }
+
+    synchronized void createCustomerInstance (Customer customer) {
+        String countryCode = customer.getCountry();
+        String seq = this.customerMapper.getSequence(countryCode);
+        if(seq == null){
+            countryCode += "00001";
+            customer.setCustomerCode(countryCode);
+        }else{
+            int num =  Integer.valueOf(seq).intValue() + 1;
+            countryCode += String.format("%05d", num);
+            customer.setCustomerCode(countryCode);
+        }
+        this.customerMapper.insert(customer);
     }
 
 }
