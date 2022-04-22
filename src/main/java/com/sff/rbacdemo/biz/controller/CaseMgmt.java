@@ -1,12 +1,15 @@
 package com.sff.rbacdemo.biz.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sff.rbacdemo.biz.entity.Case;
 import com.sff.rbacdemo.biz.entity.Task;
 import com.sff.rbacdemo.biz.mapper.CaseMapper;
 import com.sff.rbacdemo.biz.mapper.TaskMapper;
 import com.sff.rbacdemo.common.controller.BaseController;
 import com.sff.rbacdemo.common.model.APIResponse;
+import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -70,6 +73,36 @@ public class CaseMgmt extends BaseController {
         }
         return APIResponse.OK("customers", this.caseMapper.selectList(queryWrapper));
     }
+
+
+    @GetMapping("getCaseListByPage")
+    @ResponseBody
+    @RequiresAuthentication
+    public APIResponse<PageResponseDTO> getCaseListByPage(@RequestParam(required = false, value = "caseCode") String caseCode,
+                                                          @RequestParam(required = false, value = "externalCode") String externalCode,
+                                                          @RequestParam(required = false, value = "customerCode") String customerCode,
+                                                          @RequestParam(required = false, defaultValue = "0") Integer page,
+                                                          @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
+        Page<Case> pager = new Page<>(page, pageSize);
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        if (caseCode != null) {
+            queryWrapper.like("CASE_CODE", caseCode);
+        }
+        if (externalCode != null) {
+            queryWrapper.like("EXTERNAL_CODE", externalCode);
+        }
+        if (customerCode != null) {
+            queryWrapper.like("CUSTOMER_CODE", customerCode);
+        }
+        IPage<Case> paging = this.caseMapper.selectPage(pager, queryWrapper);
+        PageResponseDTO pageResponseDTO = new PageResponseDTO();
+        pageResponseDTO.setPage(paging.getCurrent());
+        pageResponseDTO.setCount(paging.getSize());
+        pageResponseDTO.setTotal(paging.getTotal());
+        pageResponseDTO.setItems(paging.getRecords());
+        return APIResponse.OK("Get Cases by Page", pageResponseDTO);
+    }
+
 
     @DeleteMapping("deleteCases")
     @ResponseBody

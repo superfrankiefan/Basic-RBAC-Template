@@ -9,7 +9,6 @@ import com.sff.rbacdemo.common.controller.BaseController;
 import com.sff.rbacdemo.common.model.APIResponse;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
 import com.sff.rbacdemo.common.properties.GlobalConstant;
-import com.sff.rbacdemo.system.entity.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +94,7 @@ public class CustomerMgmt extends BaseController {
         pageResponseDTO.setCount(paging.getSize());
         pageResponseDTO.setTotal(paging.getTotal());
         pageResponseDTO.setItems(paging.getRecords());
-        return APIResponse.OK("Get Roles by Page", pageResponseDTO);
+        return APIResponse.OK("Get Customers by Page", pageResponseDTO);
     }
 
     @DeleteMapping("deleteCustomers")
