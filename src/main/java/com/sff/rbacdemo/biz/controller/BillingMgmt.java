@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sff.rbacdemo.biz.entity.Billing;
+import com.sff.rbacdemo.biz.entity.Case;
 import com.sff.rbacdemo.biz.mapper.BillingMapper;
 import com.sff.rbacdemo.biz.mapper.CaseMapper;
 import com.sff.rbacdemo.common.controller.BaseController;
@@ -38,25 +39,18 @@ public class BillingMgmt extends BaseController {
     @ResponseBody
     @RequiresAuthentication
     public APIResponse addOrUpdateBilling(@RequestBody Billing billing){
-        if(billing != null & billing.getBillingCode() != null) {
-            QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("CASE_CODE", billing.getCaseCode());
-            String customerCode = this.caseMapper.selectOne(queryWrapper).getCustomerCode();
-            billing.setCustomerCode(customerCode);
-            billing.setBillingDate(new Date(new java.util.Date().getTime()));
-            queryWrapper.clear();
-            queryWrapper.eq("BILLING_CODE", billing.getBillingCode());
-            Billing billings = this.billingMapper.selectOne(queryWrapper);
-            if(billings == null) {
-                this.billingMapper.insert(billing);
-                return APIResponse.OK("Add Billing", null);
-            }else{
-                this.billingMapper.updateById(billing);
-                return APIResponse.OK("Update Billing", null);
+        if(billing != null) {
+            if(billing.getBillingId() != null){
+                Billing billingIns= this.billingMapper.selectById(billing.getBillingId());
+                if(billingIns != null) {
+                    this.billingMapper.updateById(billing);
+                    return APIResponse.OK("Update Billing", null);
+                }
             }
-        } else {
-            return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"账单数据非法",billing);
+            createBillingInstance(billing);
+            return APIResponse.OK("Add Billing", null);
         }
+        return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"Billing Data Invalid",billing);
     }
 
     @GetMapping("getBillingList")
@@ -134,4 +128,22 @@ public class BillingMgmt extends BaseController {
         return APIResponse.OK("Delete Billings", null);
     }
 
+    synchronized void createBillingInstance(Billing billing) {
+        billing.setBillingDate(new Date(new java.util.Date().getTime()));
+        String caseCode = billing.getCaseCode();
+        String seq = this.billingMapper.getSequence(caseCode);
+        if(billing.getCustomerCode() == null){
+            billing.setCustomerCode(caseCode.substring(0,8));
+        }
+        caseCode += "B";
+        if(seq == null){
+            caseCode += "01";
+            billing.setBillingCode(caseCode);
+        }else{
+            int num =  Integer.valueOf(seq).intValue() + 1;
+            caseCode += String.format("%02d", num);
+            billing.setBillingCode(caseCode);
+        }
+        this.billingMapper.insert(billing);
+    }
 }

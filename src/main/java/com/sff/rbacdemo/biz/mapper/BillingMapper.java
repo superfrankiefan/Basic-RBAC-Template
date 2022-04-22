@@ -9,4 +9,7 @@ import com.sff.rbacdemo.biz.entity.Billing;
  */
 
 public interface BillingMapper extends BaseMapper<Billing> {
+
+    String getSequence(String caseCode);
+
 }
