@@ -39,6 +39,9 @@ public class Billing extends BaseEntity {
     @TableField("RECEIVE_DATE")
     private Date receiveDate;
 
+    @TableField("RECEIVE_STATUS")
+    private int receiveStatus;
+
     @TableField("EXT_PAY_DATE")
     private Date extPayDate;
 
