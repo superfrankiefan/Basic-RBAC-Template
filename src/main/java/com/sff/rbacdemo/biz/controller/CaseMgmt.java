@@ -16,7 +16,6 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,20 +38,18 @@ public class CaseMgmt extends BaseController {
     @ResponseBody
     @RequiresAuthentication
     public APIResponse addOrUpdateCase(@RequestBody Case caseForm){
-        if(caseForm != null & caseForm.getCaseCode() != null) {
-            QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("CASE_CODE", caseForm.getCaseCode());
-            List custIns = this.caseMapper.selectList(queryWrapper);
-            if(custIns.isEmpty()) {
-                this.caseMapper.insert(caseForm);
-                return APIResponse.OK("Add Case", null);
-            }else{
-                this.caseMapper.updateById(caseForm);
-                return APIResponse.OK("Update Case", null);
+        if(caseForm != null) {
+            if(caseForm.getCaseId() != null){
+                Case aCase = this.caseMapper.selectById(caseForm.getCaseId());
+                if(aCase != null) {
+                    this.caseMapper.updateById(caseForm);
+                    return APIResponse.OK("Update Case", null);
+                }
             }
-        } else {
-            return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"案件数据非法",caseForm);
+            createCaseInstance(caseForm);
+            return APIResponse.OK("Add Case", null);
         }
+        return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"Case Data Invalid",caseForm);
     }
 
     @GetMapping("getCaseList")
@@ -152,6 +149,21 @@ public class CaseMgmt extends BaseController {
     public APIResponse deleteCaseTasks(@RequestBody Map<String, String> taskIds) {
         this.taskMapper.deleteById(taskIds.get("taskIds"));
         return APIResponse.OK("Delete Case Task", null);
+    }
+
+    synchronized void createCaseInstance(Case caseForm) {
+        String customerCode = caseForm.getCustomerCode();
+        String seq = this.caseMapper.getSequence(customerCode);
+        customerCode += "C";
+        if(seq == null){
+            customerCode += "000001";
+            caseForm.setCaseCode(customerCode);
+        }else{
+            int num =  Integer.valueOf(seq).intValue() + 1;
+            customerCode += String.format("%06d", num);
+            caseForm.setCaseCode(customerCode);
+        }
+        this.caseMapper.insert(caseForm);
     }
 
 }

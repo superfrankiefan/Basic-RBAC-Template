@@ -9,4 +9,7 @@ import com.sff.rbacdemo.biz.entity.Case;
  */
 
 public interface CaseMapper extends BaseMapper<Case> {
+
+    String getSequence(String customerCode);
+
 }
