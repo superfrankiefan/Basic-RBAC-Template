@@ -4,10 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sff.rbacdemo.biz.entity.Billing;
-import com.sff.rbacdemo.biz.entity.Case;
 import com.sff.rbacdemo.biz.mapper.BillingMapper;
 import com.sff.rbacdemo.biz.mapper.CaseMapper;
-import com.sff.rbacdemo.biz.mapper.CustomerMapper;
 import com.sff.rbacdemo.common.controller.BaseController;
 import com.sff.rbacdemo.common.model.APIResponse;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
@@ -17,7 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.sql.Date;
 import java.util.Map;
 
 /**
@@ -45,6 +43,7 @@ public class BillingMgmt extends BaseController {
             queryWrapper.eq("CASE_CODE", billing.getCaseCode());
             String customerCode = this.caseMapper.selectOne(queryWrapper).getCustomerCode();
             billing.setCustomerCode(customerCode);
+            billing.setBillingDate(new Date(new java.util.Date().getTime()));
             queryWrapper.clear();
             queryWrapper.eq("BILLING_CODE", billing.getBillingCode());
             Billing billings = this.billingMapper.selectOne(queryWrapper);
@@ -84,12 +83,13 @@ public class BillingMgmt extends BaseController {
                                                              @RequestParam(required = false, value = "billingCode") String billingCode,
                                                              @RequestParam(required = false, value = "caseCode") String caseCode,
                                                              @RequestParam(required = false, value = "customerCode") String customerCode,
-                                                             @RequestParam(required = false, value = "billingDate") String[] billingDate,
-                                                             @RequestParam(required = false, value = "receiveDate") String[] receiveDate,
+                                                             @RequestParam(required = false, value = "billingDate[]") String[] billingDate,
+                                                             @RequestParam(required = false, value = "receiveDate[]") String[] receiveDate,
                                                              @RequestParam(required = false, defaultValue = "0") Integer page,
                                                              @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         Page<Billing> pager = new Page<>(page, pageSize);
         QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("BILLING_DATE");
         if (billingStatus != null) {
             queryWrapper.eq("BILLING_STATUS", billingStatus);
         }

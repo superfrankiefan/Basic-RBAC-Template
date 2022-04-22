@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.sff.rbacdemo.common.model.BaseEntity;
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * @author Frankie Fan

@@ -1,6 +1,8 @@
 public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAMuYk0mumUxsRJYlCp61Q74xWuHPwKoFhfDZPM84K5qPu7o7RzbaJe83496dcRInV0rbAovfYyCPtppraDtFJE8CAwEAAQ==
 server:
   port: 8888
+  tomcat:
+    relaxed-query-chars: [ '[',']' ]
 sff:
   algorithm:
     salt: 'mrbird'
