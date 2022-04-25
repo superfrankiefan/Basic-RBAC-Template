@@ -9,4 +9,7 @@ import com.sff.rbacdemo.biz.entity.Task;
  */
 
 public interface TaskMapper extends BaseMapper<Task> {
+
+    Float getCaseTotalHours(String caseCode);
+
 }

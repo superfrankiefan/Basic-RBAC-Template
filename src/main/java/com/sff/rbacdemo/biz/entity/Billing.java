@@ -54,11 +54,17 @@ public class Billing extends BaseEntity {
     @TableField("WH_PRICE")
     private float whPrice;
 
+    @TableField("TOTAL_WHS")
+    private float totalWorkHours;
+
     @TableField("EXT_FEE")
     private float extFee;
 
     @TableField("OTHER_FEE")
     private float otherFee;
+
+    @TableField("CURRENCY")
+    private float currency = 1;
 
     @TableField("CASE_CODE")
     private String caseCode;

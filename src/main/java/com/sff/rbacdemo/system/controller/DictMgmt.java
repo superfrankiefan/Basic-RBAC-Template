@@ -13,7 +13,6 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,22 +37,17 @@ public class DictMgmt extends BaseController {
     @RequiresAuthentication
     public APIResponse addOrUpdateDict(@RequestBody Dict dict){
         if(dict != null) {
-            if(dict.getDictId() == null) {
-                this.dictMapper.insert(dict);
-                return APIResponse.OK("Add Dict", null);
-            }else {
+            if(dict.getDictId() != null) {
                 Dict dictIns = this.dictMapper.selectById(dict.getDictId());
-                if (dictIns == null) {
-                    this.dictMapper.insert(dict);
-                    return APIResponse.OK("Add Dict", null);
-                } else {
+                if (dictIns != null) {
                     this.dictMapper.updateById(dict);
                     return APIResponse.OK("Update Dict", null);
                 }
             }
-        } else {
-            return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"字典数据非法",dict);
+            this.dictMapper.insert(dict);
+            return APIResponse.OK("Add Dict", null);
         }
+        return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"Dict Data Invalid",dict);
     }
 
     @PostMapping("addOrUpdateDictDetail")
@@ -61,30 +55,26 @@ public class DictMgmt extends BaseController {
     @RequiresAuthentication
     public APIResponse addOrUpdateDictDetail(@RequestBody DictDetail dictDetail){
         if(dictDetail != null) {
-            if(dictDetail.getDetailId() == null) {
-                this.dictDetailMapper.insert(dictDetail);
-                return APIResponse.OK("Add Dict Detail", null);
-            }else{
+            if(dictDetail.getDetailId() != null) {
                 DictDetail dict = this.dictDetailMapper.selectById(dictDetail.getDetailId());
-                if (dict == null) {
-                    this.dictDetailMapper.insert(dictDetail);
-                    return APIResponse.OK("Add Dict Detail", null);
-                } else {
+                if (dict != null) {
                     this.dictDetailMapper.updateById(dictDetail);
                     return APIResponse.OK("Update Dict Detail", null);
                 }
             }
-        } else {
-            return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"字典数据非法",dictDetail);
+            this.dictDetailMapper.insert(dictDetail);
+            return APIResponse.OK("Add Dict Detail", null);
         }
+        return APIResponse.ERROR(GlobalConstant.REQ_PARAM_ERROR,"Dict Detail Data Invalid",dictDetail);
     }
 
     @GetMapping("getDictList")
     @ResponseBody
     @RequiresAuthentication
     public APIResponse getDictList(@RequestParam(required = false, value = "dictCode") String dictCode,
-                                      @RequestParam(required = false, value = "description") String description) {
+                                   @RequestParam(required = false, value = "description") String description) {
         QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByAsc("DICT_NAME");
         if (dictCode != null) {
             queryWrapper.like("DICT_CODE", dictCode);
         }
@@ -99,6 +89,7 @@ public class DictMgmt extends BaseController {
     @RequiresAuthentication
     public APIResponse getDictDetailList(@RequestParam(required = false, value = "dictCode") String dictCode) {
         QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByAsc("DETAIL_VALUE");
         if (dictCode != null) {
             queryWrapper.like("DICT_CODE", dictCode);
         }

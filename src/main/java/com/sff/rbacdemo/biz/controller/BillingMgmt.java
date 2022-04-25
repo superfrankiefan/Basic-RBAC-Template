@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sff.rbacdemo.biz.entity.Billing;
-import com.sff.rbacdemo.biz.entity.Case;
 import com.sff.rbacdemo.biz.mapper.BillingMapper;
 import com.sff.rbacdemo.biz.mapper.CaseMapper;
+import com.sff.rbacdemo.biz.mapper.TaskMapper;
 import com.sff.rbacdemo.common.controller.BaseController;
 import com.sff.rbacdemo.common.model.APIResponse;
 import com.sff.rbacdemo.common.model.PageResponseDTO;
@@ -34,6 +34,9 @@ public class BillingMgmt extends BaseController {
 
     @Autowired
     private CaseMapper caseMapper;
+
+    @Autowired
+    private TaskMapper taskMapper;
 
     @PostMapping("addOrUpdateBilling")
     @ResponseBody
@@ -131,6 +134,8 @@ public class BillingMgmt extends BaseController {
     synchronized void createBillingInstance(Billing billing) {
         billing.setBillingDate(new Date(new java.util.Date().getTime()));
         String caseCode = billing.getCaseCode();
+        float totalHours = this.taskMapper.getCaseTotalHours(caseCode);
+        billing.setTotalWorkHours(totalHours);
         String seq = this.billingMapper.getSequence(caseCode);
         if(billing.getCustomerCode() == null){
             billing.setCustomerCode(caseCode.substring(0,8));
