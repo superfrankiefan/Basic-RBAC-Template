@@ -9,4 +9,21 @@
         WHERE
             bb.CASE_CODE = #{caseCode}
     </select>
+    <select id="getOverdueBillings" resultType="com.sff.rbacdemo.biz.dto.OverdueBillingsDTO">
+        SELECT
+            bb.BILLING_CODE,
+            bb.STD_FEE ,
+            bb.WH_PRICE ,
+            bb.TOTAL_WHS ,
+            (bb.WH_PRICE * bb.TOTAL_WHS) SERVICE_FEE,
+            bb.EXT_FEE ,
+            bb.OTHER_FEE ,
+            ( bb.STD_FEE + bb.WH_PRICE + bb.TOTAL_WHS + bb.WH_PRICE * bb.TOTAL_WHS + bb.EXT_FEE + bb.OTHER_FEE ) TOTAL_COST
+        FROM
+            b_billing bb
+        WHERE
+            bb.BILLING_STATUS &lt;&gt; 2
+        AND
+            TO_DAYS(NOW()) - TO_DAYS(bb.BILLING_DATE) &gt;= bb.BILLING_DAYS;
+    </select>
 </mapper>

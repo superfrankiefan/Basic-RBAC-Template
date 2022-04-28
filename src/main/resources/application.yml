@@ -6,6 +6,7 @@ server:
 sff:
   algorithm:
     salt: 'mrbird'
+
 spring:
   datasource:
     druid:
@@ -32,3 +33,17 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+### xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    accessToken:
+    executor:
+      appname: abnormal-billing-notification-job
+      address:
+      ip:
+      port: 0
+      logpath: ./data/applogs/xxl-job/jobhandler
+      logretentiondays: 30
