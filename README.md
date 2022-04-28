@@ -35,7 +35,8 @@ Role based controll system core, including:
 - Login/Logout
 
 ## biz
-Sample biz system
+Sample biz system:
+- Job: Involve XXL-JOB to deal with scheduler jobs
 
 ## How to run
 
