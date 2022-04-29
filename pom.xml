@@ -130,6 +130,13 @@
         </dependency>
         <!-- support excel export -->
 
+        <!-- support mail -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- support mail -->
+
     </dependencies>
 
     <build>

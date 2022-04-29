@@ -28,6 +28,11 @@ spring:
       username: root
       password: WXlOncN1J7b6ZTTRWhP3C/zqiyeEC2NWQej6Eu91Odw0L3a/WACxxccuef7WUNFBazRO9bF+ddBOpB2Otq1Bjw==
       connection-properties: config.decrypt=true;config.decrypt.key=${public-key};
+  mail:
+    host: smtp.qq.com   #阿里云发送服务器地址
+#    port: 25           #端口号
+    username: 237387963@qq.com    #发送人地址
+    password: qpijaqllnmwxbiie  #密码
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*/*.xml
@@ -47,3 +52,4 @@ xxl:
       port: 0
       logpath: ./data/applogs/xxl-job/jobhandler
       logretentiondays: 30
+
