@@ -14,7 +14,7 @@
             bb.BILLING_CODE,
             bb.STD_FEE ,
             bb.WH_PRICE ,
-            bb.TOTAL_WHS ,
+            bb.TOTAL_WHS TOTAL_WORK_HOURS,
             (bb.WH_PRICE * bb.TOTAL_WHS) SERVICE_FEE,
             bb.EXT_FEE ,
             bb.OTHER_FEE ,

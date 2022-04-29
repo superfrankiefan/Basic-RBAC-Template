@@ -1,0 +1,7 @@
+2022-04-29 14:22:48 [com.xxl.job.core.thread.JobThread#run]-[130]-[Thread-7] <br>----------- xxl-job job execute start -----------<br>----------- Param:
+2022-04-29 14:22:48 [com.sff.rbacdemo.biz.job.AbnormalBillingDetector#detectorHandler]-[30]-[Thread-7] Begin detect abnormal billings: 
+2022-04-29 14:22:48 [com.sff.rbacdemo.biz.job.AbnormalBillingDetector#detectorHandler]-[32]-[Thread-7] There are %d billings have overdued.
+2022-04-29 14:22:48 [com.sff.rbacdemo.biz.job.AbnormalBillingDetector#detectorHandler]-[33]-[Thread-7] Overdue billings are generated.
+2022-04-29 14:22:48 [com.sff.rbacdemo.biz.job.AbnormalBillingDetector#detectorHandler]-[34]-[Thread-7] Overdue billings are: [OverdueBillingsDTO(billingCode=CHN00001C000001B01, stdFee=2000.0, whPrice=2000.0, totalWorkHours=0.0, serviceFee=72000.0, extFee=300.0, otherFee=120.0, totalCost=76456.0)]
+2022-04-29 14:22:51 [com.xxl.job.core.thread.JobThread#run]-[176]-[Thread-7] <br>----------- xxl-job job execute end(finish) -----------<br>----------- Result: handleCode=200, handleMsg = null
+2022-04-29 14:22:51 [com.xxl.job.core.thread.TriggerCallbackThread#callbackLog]-[197]-[xxl-job, executor TriggerCallbackThread] <br>----------- xxl-job job callback finish.

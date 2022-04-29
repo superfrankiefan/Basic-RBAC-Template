@@ -1,0 +1,13 @@
+2022-04-29 14:17:43 [com.xxl.job.core.thread.JobThread#run]-[130]-[Thread-7] <br>----------- xxl-job job execute start -----------<br>----------- Param:
+2022-04-29 14:17:43 [com.sff.rbacdemo.biz.job.AbnormalBillingDetector#detectorHandler]-[30]-[Thread-7] Begin detect abnormal billings: 
+2022-04-29 14:17:44 [com.sff.rbacdemo.biz.job.AbnormalBillingDetector#detectorHandler]-[32]-[Thread-7] There are %d billings have overdued.
+2022-04-29 14:17:44 [com.sff.rbacdemo.biz.job.AbnormalBillingDetector#detectorHandler]-[33]-[Thread-7] Overdue billings are generated.
+2022-04-29 14:17:46 [com.xxl.job.core.thread.JobThread#run]-[176]-[Thread-7] <br>----------- xxl-job job execute end(finish) -----------<br>----------- Result: handleCode=200, handleMsg = null
+2022-04-29 14:17:46 [com.xxl.job.core.thread.TriggerCallbackThread#callbackLog]-[197]-[xxl-job, executor TriggerCallbackThread] <br>----------- xxl-job job callback finish.
+2022-04-29 14:18:57 [com.xxl.job.core.thread.JobThread#run]-[191]-[Thread-7] <br>----------- JobThread toStop, stopReason:web container destroy and kill the job.
+2022-04-29 14:18:57 [com.xxl.job.core.thread.JobThread#run]-[201]-[Thread-7] <br>----------- JobThread Exception:java.lang.InterruptedException
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2014)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2088)
+	at java.util.concurrent.LinkedBlockingQueue.poll(LinkedBlockingQueue.java:467)
+	at com.xxl.job.core.thread.JobThread.run(JobThread.java:111)
+<br>----------- xxl-job job execute end(error) -----------
